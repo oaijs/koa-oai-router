@@ -1,0 +1,11 @@
+.idea
+.DS_Store
+.nyc_output
+coverage
+dist
+dist-test
+node_modules
+
+*.log
+*.map
+*.lcov

@@ -1,0 +1,167 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: >
+    A sample API that uses a petstore as an example
+    to demonstrate features in the swagger-2.0 specification
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /api
+paths:
+  /test:
+    delete:
+      tags:
+        - People
+      description: 通过姓名或者手机号码查询一个人的信息
+      x-cache:
+          expire: 60
+      x-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: name
+          in: query
+          type: string
+          description: 人员的姓名
+        - name: mobile
+          in: query
+          type: string
+          description: 人员的手机号码
+      responses:
+        200:
+          description: 获取一个人的信息
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - People
+      description: 录入一个人员的信息
+      x-controller:
+        - file: people
+          handler: post
+      parameters:
+        - name: body
+          in: body
+          description: 人员
+          required: true
+          schema:
+            $ref: '#/definitions/People'
+      responses:
+        200:
+          description: 返回录入人员的信息
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /people:
+    get:
+      tags:
+        - People
+      description: 通过姓名或者手机号码查询一个人的信息
+      x-cache:
+          expire: 60
+      x-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: name
+          in: query
+          type: string
+          description: 人员的姓名
+        - name: mobile
+          in: query
+          type: string
+          description: 人员的手机号码
+      responses:
+        200:
+          description: 获取一个人的信息
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+    post:
+      tags:
+        - People
+      description: 录入一个人员的信息
+      x-controller:
+        - file: people
+          handler: post
+      parameters:
+        - name: body
+          in: body
+          description: 人员
+          required: true
+          schema:
+            $ref: '#/definitions/People'
+      responses:
+        200:
+          description: 返回录入人员的信息
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  People:
+    title: 人
+    type: object
+    required:
+      - name
+      - sex
+      - height
+      - weight
+    properties:
+      name:
+        type: string
+      sex:
+        type: string
+        enum:
+          - male
+          - female
+      mobile:
+        type: string
+        pattern: 183\d{8}
+        default: '18312345678'
+      height:
+        type: integer
+        format: int32
+        minimum: 1
+        exclusiveMinimum: true
+        maximum: 10
+        exclusiveMaximum: true
+      weight:
+        type: integer
+        format: int32
+        minimum: 10
+        maximum: 20
+
+  Error:
+    title: Error
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      helpURL:
+        type: string
+        format: url

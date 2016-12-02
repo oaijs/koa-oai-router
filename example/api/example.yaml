@@ -1,0 +1,100 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: koa-oai-router example
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /api
+paths:
+  /people:
+    get:
+      tags:
+        - People
+      description: find a people by name or mobile
+      x-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: name
+          in: query
+          type: string
+        - name: mobile
+          in: query
+          type: string
+      responses:
+        200:
+          description: people's info
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      tags:
+        - People
+      description: input a people's info
+      x-controller:
+        - file: people
+          handler: post
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/People'
+      responses:
+        200:
+          description: people's info
+          schema:
+            $ref: '#/definitions/People'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  People:
+    title: 人
+    type: object
+    required:
+      - name
+      - sex
+      - height
+      - weight
+    properties:
+      name:
+        type: string
+      sex:
+        type: string
+        enum:
+          - male
+          - female
+      height:
+        type: integer
+        format: int32
+        minimum: 10
+        maximum: 1000
+      weight:
+        type: number
+        format: float
+        minimum: 50
+        maximum: 200
+      mobile:
+        type: string
+  Error:
+    title: Error
+    type: object
+    required:
+      - status
+      - error
+    properties:
+      status:
+        type: integer
+      path:
+        type: string
+      error:
+        type: string
+      detail:
+        type: object

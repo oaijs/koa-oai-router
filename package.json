@@ -1,0 +1,76 @@
+{
+  "name": "koa-oai-router",
+  "version": "2.0.0",
+  "main": "dist/oai-router.js",
+  "scripts": {
+    "clean": "rm -rf .nyc_output coverage dist",
+    "build": "npm run clean && babel lib --ignore swagger-ui -d dist && cp -r lib/swagger-ui dist",
+    "test": "node_modules/.bin/nyc node_modules/.bin/ava -v test",
+    "test-cov": "npm run test && npm run analyze-coverage && npm run check-coverage",
+    "analyze-coverage": "node_modules/.bin/nyc report --reporter=html",
+    "check-coverage": "node_modules/.bin/nyc check-coverage --lines 90 --functions 90 --branches 90",
+    "test-travis": "npm run test && node_modules/.bin/nyc report --reporter=text-lcov > coverage/lcov.info && npm run check-coverage",
+    "lint": "node_modules/.bin/eslint .",
+    "example": "npm run build && DEBUG=koa-oai-router* node --harmony example/app.js"
+  },
+  "keywords": [
+    "koa",
+    "swagger",
+    "oai",
+    "openapi",
+    "restful",
+    "api",
+    "router"
+  ],
+  "author": "bitebit",
+  "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BiteBit/koa-oai-router.git"
+  },
+  "ava": {
+    "require": [
+      "babel-core/register"
+    ]
+  },
+  "dependencies": {
+    "debug": "^2.3.2",
+    "koa-compose": "^3.2.1",
+    "koa-mount": "^2.0.0",
+    "koa-router": "^7.0.1",
+    "koa-static": "^3.0.0",
+    "koa-views-swagger": "^5.2.1",
+    "lodash": "^4.17.2",
+    "mustache": "^2.3.0",
+    "swagger-parser": "^3.4.1",
+    "tv4-x": "^1.2.8",
+    "url-join": "^1.1.0"
+  },
+  "publishConfig": {
+    "tag": "next"
+  },
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-plugin-transform-async-generator-functions": "^6.17.0",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
+    "babel-plugin-transform-es2015-block-scoped-functions": "^6.8.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.18.0",
+    "babel-plugin-transform-es2015-classes": "^6.18.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.19.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-es2015-parameters": "^6.18.0",
+    "codecov": "^1.0.1",
+    "eslint-config-crocodile": "^1.0.0",
+    "koa": "^2.0.0-alpha.7",
+    "koa-bodyparser": "^3.2.0",
+    "nyc": "^9.0.1",
+    "supertest": "^2.0.1"
+  },
+  "description": "Koa Router, based on OpenAPI, Swagger and Json Schema."
+}
