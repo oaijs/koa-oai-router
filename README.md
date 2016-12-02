@@ -10,10 +10,10 @@
 
 [![NPM](https://nodei.co/npm/koa-oai-router.png?downloads=true&stars=true)](https://nodei.co/npm/koa-oai-router/)
 
-[travis-img]: https://travis-ci.org/BiteBit/koa-oai-router.svg?branch=new
+[travis-img]: https://travis-ci.org/BiteBit/koa-oai-router.svg?branch=master
 [travis-url]: https://travis-ci.org/BiteBit/koa-oai-router
-[coveralls-img]: https://coveralls.io/repos/github/BiteBit/koa-oai-router/badge.svg?branch=new
-[coveralls-url]: https://coveralls.io/github/BiteBit/koa-oai-router?branch=new
+[coveralls-img]: https://coveralls.io/repos/github/BiteBit/koa-oai-router/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/BiteBit/koa-oai-router?branch=master
 [npm-img]: https://img.shields.io/npm/v/koa-oai-router.svg
 [npm-url]: https://npmjs.org/package/koa-oai-router
 [david-img]: https://img.shields.io/david/BiteBit/koa-oai-router.svg
