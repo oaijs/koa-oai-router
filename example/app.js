@@ -9,7 +9,7 @@ var app = new Koa();
 app.use(bodyParser());
 app.use(logger());
 
-var server = app.listen();
+var server = app.listen(9000);
 
 var opt = {
   apiDoc: './example/api/example.yaml',

@@ -8,34 +8,38 @@ produces:
   - application/json
 basePath: /api
 paths:
-  /people:
+  /user/{userId}:
     get:
       tags:
-        - People
-      description: find a people by name or mobile
+        - User
+      description: find a user by userId
       x-controller:
         - file: people
           handler: get
       parameters:
-        - name: name
-          in: query
+        - name: token
+          in: header
           type: string
-        - name: mobile
-          in: query
+          required: true
+          description: token in http header.
+        - name: userId
+          in: path
+          required: true
           type: string
       responses:
         200:
-          description: people's info
+          description: user's info
           schema:
-            $ref: '#/definitions/People'
+            $ref: '#/definitions/User'
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
     post:
       tags:
-        - People
-      description: input a people's info
+        - User
+      description: input a user's info
       x-controller:
         - file: people
           handler: post
@@ -44,18 +48,19 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/People'
+            $ref: '#/definitions/User'
       responses:
         200:
-          description: people's info
+          description: user's info
           schema:
-            $ref: '#/definitions/People'
+            $ref: '#/definitions/User'
         default:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
 definitions:
-  People:
+  User:
     title: 人
     type: object
     required:
