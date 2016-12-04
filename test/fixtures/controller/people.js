@@ -9,7 +9,13 @@ function post(ctx, next) {
   ctx.body = people;
 }
 
+function crash(ctx, next) {
+  let status = undefined;
+  ctx.body = status['undefined'];
+}
+
 module.exports = {
   get: get,
-  post: post
+  post: post,
+  crash: crash
 };

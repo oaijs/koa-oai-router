@@ -176,6 +176,32 @@
                     }
                 }
             }
+        },
+        "/crash1": {
+            "get": {
+                "summary": "Info for a specific pet",
+                "x-controller": [{
+                    "file": "people",
+                    "handler": "crash"
+                }],
+                "tags": [
+                    "pets"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Expected response to a valid request",
+                        "schema": {
+                            "$ref": "#/definitions/Pets"
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

@@ -41,7 +41,6 @@ test('with server options', t => {
   t.pass();
 })
 
-
 test('with no server and no port options', t => {
   const app = new Koa();
   const server = app.listen();
@@ -50,6 +49,43 @@ test('with no server and no port options', t => {
     apiDoc: `${__dirname}/fixtures/api/api.json`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false
+  };
+
+  const router = new Router(opt);
+
+  app.use(bodyParser());
+  app.use(router.routes());
+  app.use(router.apiExplorer());
+  t.pass();
+})
+
+test('with versioning option', t => {
+  const app = new Koa();
+  const server = app.listen();
+
+  const opt = {
+    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    controllerDir: `${__dirname}/fixtures/controller`,
+    apiExplorerVisible: false,
+    versioning: false
+  };
+
+  const router = new Router(opt);
+
+  app.use(bodyParser());
+  app.use(router.routes());
+  app.use(router.apiExplorer());
+  t.pass();
+})
+
+test('with no apiExplorerVisible option', t => {
+  const app = new Koa();
+  const server = app.listen();
+
+  const opt = {
+    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    controllerDir: `${__dirname}/fixtures/controller`,
+    versioning: false
   };
 
   const router = new Router(opt);

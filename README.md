@@ -54,7 +54,7 @@ I truly hope that this library can help those who are in the same trouble. Happy
     - [versioning](#versioning)
     - [apiExplorerVisible](#apiexplorervisible)
     - [apiExplorerPath](#apiexplorerpath)
-    - [apiExplorerStaticsPath](#apiexplorerstaticspath)
+    - [apiExplorerStaticPath](#apiexplorerstaticspath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
   - [Contrller](#contrller)
@@ -313,7 +313,7 @@ string optional default */api-explorer*
 
 The path of *api-explorer*.
 
-### apiExplorerStaticsPath
+### apiExplorerStaticPath
 
 string optional default*/koa-oai-router*
 

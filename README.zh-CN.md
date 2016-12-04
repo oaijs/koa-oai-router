@@ -56,7 +56,7 @@
     - [versioning](#versioning)
     - [apiExplorerVisible](#apiexplorervisible)
     - [apiExplorerPath](#apiexplorerpath)
-    - [apiExplorerStaticsPath](#apiexplorerstaticspath)
+    - [apiExplorerStaticPath](#apiexplorerstaticspath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
   - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
@@ -314,7 +314,7 @@ string 可选 默认*/api-explorer*
 
 api-explorer工具的路径。
 
-### apiExplorerStaticsPath
+### apiExplorerStaticPath
 
 string 可选（不推荐设置） 默认*/koa-oai-router*
 

@@ -145,3 +145,13 @@ test.cb('POST /v1/api/pets invalid parameters array -> optional', t => {
       t.end();
     });
 })
+
+test.cb('GET /v1/api/pets/crash', t => {
+  request(server)
+    .get('/v1/api/crash1')
+    .expect(500)
+    .end(function(err, res) {
+      if (err) throw err;
+      t.end();
+    });
+})
