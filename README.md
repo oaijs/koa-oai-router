@@ -367,6 +367,7 @@ function optional [default error handler](#error-handle)
 You can design your custom error handler by doing this. The function has parameters **error, ctx, schema**. The returned value is response to the reqeust.
 
 * error Error, created by [http-errors](https://github.com/jshttp/http-errors). if HTTP status code is 400, the error will have extra keywords below.
+  * type string invalid parameter type, *header, path, query, body*
   * path string invalid parameter's path
   * error string invalid message
   * data object data been validated
@@ -439,7 +440,7 @@ paths:
 
 ### path
 
-Validate the path, multi path parameters are supported. 
+Validate the path, multi path parameters are supported. If **peopleId** is missing, the route will not be macthed. At this moment, validation of path only support data type and format.
 
 **Notice: Path parameter syntax in OpenAPI is "{pathId}".**
 
@@ -566,6 +567,8 @@ definitions:
     properties:
       status:
         type: integer
+      type:
+      	type: string
       path:
         type: string
       error:
@@ -579,6 +582,7 @@ When page is not inputed, the api will send HTTP 400 with the response body hand
 ```json
 {
     "status": 400,
+    "type": "query",
     "path": "",
     "error": "Missing required property: page",
     "data": {},

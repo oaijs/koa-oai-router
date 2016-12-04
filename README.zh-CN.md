@@ -367,6 +367,7 @@ function 可选 [默认处理函数](#)
 如果想自己实现错误结果定义，那么你需要实现该函数，该函数有三个参数(error, ctx, schema)，并返回处理结果。
 
 * error Error对象，由[http-errors](https://github.com/jshttp/http-errors)创建。如果是400错误，那么error对象额外包含以下字段
+  * type string 校验失败的参数类型，header, path, query和body。
   * path string 参数校验失败的字段
   * error string 参数校验失败的错误提示
   * data object 参与校验的参数
@@ -454,7 +455,7 @@ paths:
           type: string
 ```
 
-校验接口path中petId是否存在并且为字符串。支持多个path参数同时校验。
+如果你未传入**peopleId**，那么路由将无法被匹配到，而不是提示HTTP 400参数校验失败，目前只支持对path的参数类型，格式做校验并不支持required的校验。支持多个path参数同时校验。
 
 ### query(formData)
 
@@ -566,6 +567,8 @@ definitions:
     properties:
       status:
         type: integer
+      type:
+      	type: string
       path:
         type: string
       error:
@@ -579,6 +582,7 @@ definitions:
 ```json
 {
     "status": 400,
+    "type": "query"
     "path": "",
     "error": "Missing required property: page",
     "data": {},

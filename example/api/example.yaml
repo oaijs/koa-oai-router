@@ -21,11 +21,13 @@ paths:
           in: header
           type: string
           required: true
+          pattern: token.*
           description: token in http header.
         - name: userId
           in: path
           required: true
-          type: string
+          type: number
+          format: int32
       responses:
         200:
           description: user's info
@@ -35,7 +37,6 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-
     post:
       tags:
         - User
@@ -44,6 +45,12 @@ paths:
         - file: people
           handler: post
       parameters:
+        - name: token
+          in: header
+          type: string
+          required: true
+          pattern: token.*
+          description: token in http header.
         - name: body
           in: body
           required: true
@@ -58,6 +65,58 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+
+  /users:
+    get:
+      tags:
+        - User
+      description: find users by name,sex,height,weight
+      x-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: token
+          in: header
+          type: string
+          required: true
+          pattern: token.*
+          description: token in http header.
+        - name: name
+          in: query
+          required: true
+          type: string
+        - name: sex
+          in: query
+          required: false
+          type: string
+          default: male
+          enum:
+            - male
+            - female
+        - name: height
+          in: query
+          type: number
+          required: true
+          format: float
+          maximum: 100
+          minimum: 10
+        - name: weight
+          in: query
+          type: number
+          required: true
+          format: float
+          maximum: 100
+          minimum: 10
+      responses:
+        200:
+          description: user's info
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
 
 definitions:
   User:
@@ -80,12 +139,12 @@ definitions:
         type: integer
         format: int32
         minimum: 10
-        maximum: 1000
+        maximum: 100
       weight:
         type: number
         format: float
-        minimum: 50
-        maximum: 200
+        minimum: 10
+        maximum: 100
       mobile:
         type: string
   Error:
@@ -97,6 +156,8 @@ definitions:
     properties:
       status:
         type: integer
+      type:
+        type: string
       path:
         type: string
       error:
