@@ -21,6 +21,9 @@
         "/pets": {
             "get": {
                 "summary": "List all pets",
+                "x-oai-cache": {
+                    "expire": 86400
+                },
                 "x-controller": [{
                     "file": "people",
                     "handler": "get"
@@ -69,7 +72,7 @@
             },
             "post": {
                 "summary": "Create a pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -101,7 +104,7 @@
         "/pets/{petId}": {
             "get": {
                 "summary": "Info for a specific pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -136,7 +139,7 @@
         "/pets/{petId}/{ownerId}": {
             "get": {
                 "summary": "Info for a specific pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -180,7 +183,7 @@
         "/crash1": {
             "get": {
                 "summary": "Info for a specific pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "crash"
                 }],

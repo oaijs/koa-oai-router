@@ -116,7 +116,7 @@ paths:
       tags:
         - People
       description: find a people by name or mobile
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
@@ -139,7 +139,7 @@ paths:
       tags:
         - People
       description: input a people's info
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: post
       parameters:
@@ -377,9 +377,9 @@ You can design your custom error handler by doing this. The function has paramet
 
 ## Contrller
 
-**koa-oai-router** enlarges OpenAPI, now we will recognize **x-controller** keyword in all **method**.
+**koa-oai-router** enlarges OpenAPI, now we will recognize **x-oai-controller** keyword in all **method**.
 
-**x-controller** is an object array and every element must include **file** and **handler**.
+**x-oai-controller** is an object array and every element must include **file** and **handler**.
 
 Handler will be executed from up to down, if you have multi handlers. Eg, *acl.isAdmin* will be executed before *people.get*
 
@@ -390,7 +390,7 @@ paths:
       tags:
         - People
       description: find a people by name or mobile
-      x-controller:
+      x-oai-controller:
         - file: acl
           handler: isAdmin
         - file: people
@@ -528,7 +528,7 @@ basePath: /api
 paths:
   /user:
     get:
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:

@@ -18,7 +18,7 @@ paths:
       description: 通过姓名或者手机号码查询一个人的信息
       x-cache:
           expire: 60
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
@@ -43,7 +43,7 @@ paths:
       tags:
         - People
       description: 录入一个人员的信息
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: post
       parameters:
@@ -70,7 +70,7 @@ paths:
       description: 通过姓名或者手机号码查询一个人的信息
       x-cache:
           expire: 60
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
@@ -96,7 +96,7 @@ paths:
       tags:
         - People
       description: 录入一个人员的信息
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: post
       parameters:

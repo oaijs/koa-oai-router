@@ -116,7 +116,7 @@ paths:
       tags:
         - People
       description: find a people by name or mobile
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
@@ -139,7 +139,7 @@ paths:
       tags:
         - People
       description: input a people's info
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: post
       parameters:
@@ -378,11 +378,11 @@ function 可选 [默认处理函数](#)
 
 ## 接口的控制器
 
-**koa-oai-router**对OpenAPI进行了扩展，会识别API文档中每个path下的method中包含的**x-controller**字段。
+**koa-oai-router**对OpenAPI进行了扩展，会识别API文档中每个path下的method中包含的**x-oai-controller**字段。
 
-**x-controller**是一个对象数组，每个元素均需包含参数**file**和**handler**。
+**x-oai-controller**是一个对象数组，每个元素均需包含参数**file**和**handler**。
 
-**如果x-controller包含多个元素，那么中间件处理的优先级按照由上至下依次进行。**
+**如果x-oai-controller包含多个元素，那么中间件处理的优先级按照由上至下依次进行。**
 
 
 ```yaml
@@ -392,7 +392,7 @@ paths:
       tags:
         - People
       description: find a people by name or mobile
-      x-controller:
+      x-oai-controller:
         - file: acl
           handler: isAdmin
         - file: people
@@ -528,7 +528,7 @@ basePath: /api
 paths:
   /user:
     get:
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
