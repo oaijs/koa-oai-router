@@ -21,7 +21,7 @@
         "/pets": {
             "get": {
                 "summary": "List all pets",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -69,7 +69,7 @@
             },
             "post": {
                 "summary": "Create a pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -101,7 +101,7 @@
         "/pets/{petId}": {
             "get": {
                 "summary": "Info for a specific pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],
@@ -136,7 +136,7 @@
         "/pets/{petId}/{ownerId}": {
             "get": {
                 "summary": "Info for a specific pet",
-                "x-controller": [{
+                "x-oai-controller": [{
                     "file": "people",
                     "handler": "get"
                 }],

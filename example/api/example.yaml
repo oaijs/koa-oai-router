@@ -13,7 +13,9 @@ paths:
       tags:
         - User
       description: find a user by userId
-      x-controller:
+      x-oai-cache:
+        expire: 86400
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
@@ -41,7 +43,7 @@ paths:
       tags:
         - User
       description: input a user's info
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: post
       parameters:
@@ -71,7 +73,7 @@ paths:
       tags:
         - User
       description: find users by name,sex,height,weight
-      x-controller:
+      x-oai-controller:
         - file: people
           handler: get
       parameters:
