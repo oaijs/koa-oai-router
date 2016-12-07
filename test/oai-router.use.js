@@ -9,7 +9,7 @@ test('router.use not valid name', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     versioning: false,
     apiExplorerVisible: false
@@ -36,7 +36,7 @@ test('router.use not valid function', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     versioning: false,
     apiExplorerVisible: false
@@ -56,7 +56,7 @@ test('router.use valid parameter', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     versioning: false,
     apiExplorerVisible: false

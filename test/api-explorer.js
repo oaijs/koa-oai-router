@@ -8,7 +8,7 @@ import Router from '../lib/oai-router';
 test.cb('api explorer', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: true
   };
@@ -33,7 +33,7 @@ test.cb('api explorer', t => {
 test.cb('no api explorer', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false
   };
@@ -58,7 +58,7 @@ test.cb('no api explorer', t => {
 test.cb('default apiExplorerVisible option', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
   };
   const router = new Router(opt);
@@ -82,7 +82,7 @@ test.cb('default apiExplorerVisible option', t => {
 test.cb('custom api explorer', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: true,
     apiExplorerPath: '/custom-api-explorer',
@@ -109,7 +109,7 @@ test.cb('custom api explorer', t => {
 test.cb('custom api explorer static', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: true,
     apiExplorerPath: '/custom-api-explorer',

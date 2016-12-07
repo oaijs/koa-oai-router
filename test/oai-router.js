@@ -8,7 +8,7 @@ import Router from '../lib/oai-router';
 test('load wrong apiDoc', t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api-error.json`,
+    apiDoc: `${__dirname}/fixtures/api/api-error.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false
   };
@@ -27,7 +27,7 @@ test('with server options', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false,
     server: server
@@ -46,7 +46,7 @@ test('with no server and no port options', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false
   };
@@ -64,7 +64,7 @@ test('with versioning option', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false,
     versioning: false
@@ -83,7 +83,7 @@ test('with no apiExplorerVisible option', t => {
   const server = app.listen();
 
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     versioning: false
   };

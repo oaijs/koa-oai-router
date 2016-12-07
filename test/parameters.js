@@ -10,7 +10,7 @@ let server = null;
 test.cb.before(t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
     apiExplorerVisible: false
   };
