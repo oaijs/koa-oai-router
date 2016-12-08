@@ -119,8 +119,64 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  "/coercion":
+    get:
+      summary:
+      x-oai-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: id
+          in: query
+          type: number
+          required: true
+          format: int32
+        - name: required
+          in: query
+          type: boolean
+          required: true
+        - name: date
+          in: query
+          type: string
+          format: date
+          required: true
+      responses:
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary:
+      x-oai-controller:
+        - file: people
+          handler: get
+      parameters:
+        - name: data
+          in: body
+          type: number
+          schema:
+            $ref: "#/definitions/Coercion"
+      responses:
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 
 definitions:
+  Coercion:
+    required:
+      - id
+      - required
+      - date
+    properties:
+      id:
+        type: string
+      required:
+        type: boolean
+      date:
+        type: string
+        format: date
+
   User:
     title: 人
     type: object

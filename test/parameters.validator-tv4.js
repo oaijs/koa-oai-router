@@ -10,9 +10,10 @@ let server = null;
 test.cb.before(t => {
   const app = new Koa();
   const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.json`,
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
     controllerDir: `${__dirname}/fixtures/controller`,
-    apiExplorerVisible: false
+    apiExplorerVisible: false,
+    validator: 'tv4'
   };
   const router = new Router(opt);
   server = app.listen();
@@ -30,7 +31,10 @@ test.cb('GET /v1/api/pets 200', t => {
     .query({limit: 10, page: 1})
     .expect(200)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -40,7 +44,10 @@ test.cb('GET /v1/api/pets no parameter', t => {
     .get('/v1/api/pets')
     .expect(400)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -51,7 +58,10 @@ test.cb('GET /v1/api/pets invalid parameters', t => {
     .query({limit: 'aaa', page: 1})
     .expect(400)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -62,7 +72,10 @@ test.cb('GET /v1/api/pets one unrequired parameters', t => {
     .query({limit: 1})
     .expect(400)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -73,7 +86,10 @@ test.cb('GET /v1/api/pets one required parameters', t => {
     .query({page: 1})
     .expect(200)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -87,7 +103,10 @@ test.cb('POST /v1/api/pets valid parameters', t => {
       "tag": "string"}])
     .expect(200)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -101,7 +120,10 @@ test.cb('POST /v1/api/pets valid parameters string to number', t => {
       "tag": "string"}])
     .expect(200)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -115,7 +137,10 @@ test.cb('POST /v1/api/pets invalid parameters array -> object', t => {
       "tag": "string"})
     .expect(400)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -128,7 +153,10 @@ test.cb('POST /v1/api/pets invalid parameters array -> required', t => {
       "tag": "string"}])
     .expect(400)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -141,7 +169,10 @@ test.cb('POST /v1/api/pets invalid parameters array -> optional', t => {
       "name": "string"}])
     .expect(200)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })
@@ -151,7 +182,10 @@ test.cb('GET /v1/api/pets/crash', t => {
     .get('/v1/api/crash1')
     .expect(500)
     .end(function(err, res) {
-      if (err) throw err;
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
       t.end();
     });
 })

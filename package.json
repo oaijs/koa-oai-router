@@ -1,6 +1,6 @@
 {
   "name": "koa-oai-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/oai-router.js",
   "scripts": {
     "clean": "rm -rf .nyc_output coverage dist",
@@ -37,6 +37,7 @@
     ]
   },
   "dependencies": {
+    "ajv": "^5.0.0-beta.1",
     "debug": "^2.3.2",
     "koa-compose": "^3.2.1",
     "koa-mount": "^2.0.0",

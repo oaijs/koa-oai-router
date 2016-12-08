@@ -1,3 +1,4 @@
+---
 swagger: '2.0'
 info:
   version: 1.0.0
@@ -15,11 +16,9 @@ paths:
   "/pets":
     get:
       summary: List all pets
-      x-oai-cache:
-        expire: 86400
-      x-controller:
+      x-oai-controller:
       - file: people
-        handler: get
+        handler: get_not_found
       tags:
       - pets
       parameters:
@@ -111,23 +110,6 @@ paths:
         description: The id of the owner to retrieve
         type: integer
         format: int64
-      responses:
-        '200':
-          description: Expected response to a valid request
-          schema:
-            "$ref": "#/definitions/Pets"
-        default:
-          description: unexpected error
-          schema:
-            "$ref": "#/definitions/Error"
-  "/crash1":
-    get:
-      summary: Info for a specific pet
-      x-oai-controller:
-      - file: people
-        handler: crash
-      tags:
-      - pets
       responses:
         '200':
           description: Expected response to a valid request
