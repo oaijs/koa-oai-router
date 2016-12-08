@@ -119,6 +119,19 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  "/empty-query":
+    get:
+      summary:
+      x-oai-controller:
+        - file: people
+          handler: get
+      parameters:
+      responses:
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   "/coercion":
     get:
       summary:

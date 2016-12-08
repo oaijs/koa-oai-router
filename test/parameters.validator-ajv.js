@@ -177,6 +177,19 @@ test.cb('POST /v1/api/pets invalid parameters array -> optional', t => {
     });
 })
 
+test.cb('GET /v1/api/no-required-parameter', t => {
+  request(server)
+    .get('/v1/api/no-required-parameter')
+    .expect(200)
+    .end(function(err, res) {
+      if (err) {
+        console.error(err, res);
+        throw err;
+      }
+      t.end();
+    });
+})
+
 test.cb('GET /v1/api/pets/crash', t => {
   request(server)
     .get('/v1/api/crash1')
