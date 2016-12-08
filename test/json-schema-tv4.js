@@ -3,9 +3,9 @@ import test from 'ava';
 import validate from '../lib/validator/json-schema';
 
 test('validate invalid data', (t)=> {
-  t.is(validate({}, null).valid, false)
-  t.is(validate(null, {}).valid, false)
-  t.is(validate(null, null).valid, false)
+  t.is(validate({}, null, null, 'tv4').valid, false)
+  t.is(validate(null, {}, null, 'tv4').valid, false)
+  t.is(validate(null, null, null, 'tv4').valid, false)
 })
 
 test('validate valid data', (t)=> {
@@ -24,7 +24,7 @@ test('validate valid data', (t)=> {
         "format": "int32"
       },
       "weight": {
-        "type": "number",
+        "type": "integer",
         "format": "int64"
       },
       "height": {
@@ -48,7 +48,7 @@ test('validate valid data', (t)=> {
     money: 99999999999999.99999
   }
 
-  t.is(validate(data, schema).valid, true)
+  t.is(validate(data, schema, null, 'tv4').valid, true)
 })
 
 test('validate string to number', (t)=> {
@@ -91,7 +91,7 @@ test('validate string to number', (t)=> {
     money: '99999999999999.99999'
   }
 
-  t.is(validate(data, schema).valid, true)
+  t.is(validate(data, schema, null, 'tv4').valid, true)
 })
 
 test('validate int32 data', (t)=> {
@@ -121,10 +121,10 @@ test('validate int32 data', (t)=> {
     age: -2147483648 + 1,
   }
 
-  t.is(validate(data, schema).valid, false)
-  t.is(validate(data1, schema).valid, false)
-  t.is(validate(data2, schema).valid, true)
-  t.is(validate(data3, schema).valid, true)
+  t.is(validate(data, schema, null, 'tv4').valid, false)
+  t.is(validate(data1, schema, null, 'tv4').valid, false)
+  t.is(validate(data2, schema, null, 'tv4').valid, true)
+  t.is(validate(data3, schema, null, 'tv4').valid, true)
 })
 
 test('validate int64 data', (t)=> {
@@ -154,10 +154,10 @@ test('validate int64 data', (t)=> {
     age: Number.MIN_SAFE_INTEGER + 1,
   }
 
-  t.is(validate(data, schema).valid, false)
-  t.is(validate(data1, schema).valid, false)
-  t.is(validate(data2, schema).valid, true)
-  t.is(validate(data3, schema).valid, true)
+  t.is(validate(data, schema, null, 'tv4').valid, false)
+  t.is(validate(data1, schema, null, 'tv4').valid, false)
+  t.is(validate(data2, schema, null, 'tv4').valid, true)
+  t.is(validate(data3, schema, null, 'tv4').valid, true)
 })
 
 test('validate float data', (t)=> {
@@ -195,12 +195,12 @@ test('validate float data', (t)=> {
     age: 3.402823e38 + 100099999999999999999999,
   }
 
-  t.is(validate(data, schema).valid, true)
-  t.is(validate(data1, schema).valid, true)
-  t.is(validate(data2, schema).valid, true)
-  t.is(validate(data3, schema).valid, true)
-  t.is(validate(data4, schema).valid, false)
-  t.is(validate(data5, schema).valid, false)
+  t.is(validate(data, schema, null, 'tv4').valid, true)
+  t.is(validate(data1, schema, null, 'tv4').valid, true)
+  t.is(validate(data2, schema, null, 'tv4').valid, true)
+  t.is(validate(data3, schema, null, 'tv4').valid, true)
+  t.is(validate(data4, schema, null, 'tv4').valid, false)
+  t.is(validate(data5, schema, null, 'tv4').valid, false)
 })
 
 test('validate double data', (t)=> {
@@ -238,12 +238,12 @@ test('validate double data', (t)=> {
     age: Number.MIN_VALUE * 0.1,
   }
 
-  t.is(validate(data, schema).valid, true)
-  t.is(validate(data1, schema).valid, true)
-  t.is(validate(data2, schema).valid, true)
-  t.is(validate(data3, schema).valid, true)
-  t.is(validate(data4, schema).valid, false)
-  t.is(validate(data5, schema).valid, false)
+  t.is(validate(data, schema, null, 'tv4').valid, true)
+  t.is(validate(data1, schema, null, 'tv4').valid, true)
+  t.is(validate(data2, schema, null, 'tv4').valid, true)
+  t.is(validate(data3, schema, null, 'tv4').valid, true)
+  t.is(validate(data4, schema, null, 'tv4').valid, false)
+  t.is(validate(data5, schema, null, 'tv4').valid, false)
 })
 
 test('validate custom formater', (t)=> {
@@ -272,18 +272,18 @@ test('validate custom formater', (t)=> {
   }
 
   function languageFormater (data, schema) {
-    return data !== 'zh-CN';
+    return data === 'zh-CN';
   }
 
   function languageFormater1 (data, schema) {
     return 'error';
   }
 
-  t.is(validate(data, schema, {}).valid, true)
-  t.is(validate(data, schema, {'zh-CN': languageFormater1}).valid, false)
+  t.is(validate(data, schema, {'zh-CN': languageFormater}, 'tv4').valid, true)
+  t.is(validate(data, schema, {'zh-CN': languageFormater1}, 'tv4').valid, false)
 })
 
-test('validate engine', (t)=> {
+test('validate invalid engine', (t)=> {
   const schema = {
     "title": "Example Schema",
     "type": "object",
@@ -293,6 +293,10 @@ test('validate engine', (t)=> {
       },
       "lastName": {
         "type": "string"
+      },
+      "language": {
+        "type": "string",
+        "format": "zh-CN"
       }
     },
     "required": ["firstName", "lastName"]
@@ -300,8 +304,18 @@ test('validate engine', (t)=> {
 
   const data = {
     firstName: 'gao',
-    lastName: 'jin'
+    lastName: 'jin',
+    language: 'zh-CN'
   }
 
-  t.is(validate(data, schema, {}, 'ajv').valid, true)
+  function languageFormater (data, schema) {
+    return data === 'zh-CN';
+  }
+
+  function languageFormater1 (data, schema) {
+    return 'error';
+  }
+
+  t.is(validate(data, schema, {'zh-CN': languageFormater}, 'invalid engine').valid, false)
+  t.is(validate(data, schema, {'zh-CN': languageFormater1}, 'invalid engine').valid, false)
 })

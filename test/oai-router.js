@@ -95,3 +95,22 @@ test('with no apiExplorerVisible option', t => {
   app.use(router.apiExplorer());
   t.pass();
 })
+
+test('with no validator option', t => {
+  const app = new Koa();
+  const server = app.listen();
+
+  const opt = {
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
+    controllerDir: `${__dirname}/fixtures/controller`,
+    versioning: false,
+    validator: null
+  };
+
+  const router = new Router(opt);
+
+  app.use(bodyParser());
+  app.use(router.routes());
+  app.use(router.apiExplorer());
+  t.pass();
+})

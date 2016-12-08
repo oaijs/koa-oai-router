@@ -53,10 +53,11 @@
     - [controllerDir](#controllerdir)
     - [port](#port)
     - [server](#server)
+    - [validator](#validator)
     - [versioning](#versioning)
     - [apiExplorerVisible](#apiexplorervisible)
     - [apiExplorerPath](#apiexplorerpath)
-    - [apiExplorerStaticPath](#apiexplorerstaticspath)
+    - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
   - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
@@ -277,25 +278,34 @@ string 必须
 
 api描述文件的路径，目前支持OpenAPI2.0的json/yaml格式文件。
 
-### controllerDir  
+### controllerDir
 
 string 必须
 
 控制器所在的文件夹目录，主要的业务逻辑处理入口。
 
-### port 
+### port
 
 number 可选 默认80
 
 koa服务监听的端口，用于生成api-explorer链接提示信息。
 
-### server  
+### server
 
 net.Socket 可选
 
 koa服务监听时返回的Socket，用于自动获取服务的端口，也是用于生成api-explorer链接提示信息。当*port*与*server*同时指定时，优先使用*port*。*server*与*port*设置其一即可。
 
-### versioning 
+### validator
+
+string 可选 默认ajv
+
+选择使用的校验引擎[ajv](https://github.com/epoberezkin/ajv)，[tv4](https://github.com/geraintluff/tv4)或者设置**null**不使用校验引擎。这两个校验引擎并不是都很完美，我任然在寻找更合适的校验引擎
+
+* ajv 在Json Schema的[Benchmark ](https://github.com/ebdrup/json-schema-benchmark)中表现最优秀，并且支持数据类型被动转换，这个特性很适合做query的校验，因为querystring解析出Json Object的值总是字符串类型。但是目前对于Json Schema的自定义format支持仅限于string类型。
+* tv4 在Json Schema的[Benchmark ](https://github.com/ebdrup/json-schema-benchmark)中表现一般，不支持数据类型的被动转换。但是对于Json Schema的自定义format支持不限于string类型。
+
+### versioning
 
 boolean 可选 默认true
 
@@ -320,7 +330,7 @@ string 可选（不推荐设置） 默认*/koa-oai-router*
 
 swagger-ui静态资源的目录，除非和你的静态资源目录发生冲突。
 
-### jsonSchemaFormatters 
+### jsonSchemaFormatters
 
 object 可选 默认{}
 
@@ -332,7 +342,10 @@ object的key对应的value是一个函数。参数列表为(data, schema)。
 * data 需要校验的数据。
 * schema 该数据对应的Json Schema。
 
-校验函数返回null表示校验通过，返回string表示校验失败（该错误字符串将作为错误信息）。
+校验结果依赖于你使用哪个校验引擎。
+
+* ajv 校验函数返回true表示通过，返回false表示校验失败。
+* tv4 校验函数返回null表示校验通过，返回string表示校验失败（该错误字符串将作为错误信息）。
 
 ```javascript
 import Koa from ('koa');
@@ -605,6 +618,6 @@ definitions:
 * 支持OpenAPI/Swagger1.x规范
 * 支持OpenAPI/Swagger2.0协议中的Security校验
 * 支持接口的返回结果校验
-* 内置更多常用的format校验（邮箱，电话号码，IP地址等）
+* 更多的Json Schema校验引擎调研
 * 更多的单元测试
 * Benchmark

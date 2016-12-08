@@ -51,10 +51,11 @@ I truly hope that this library can help those who are in the same trouble. Happy
     - [controllerDir](#controllerdir)
     - [port](#port)
     - [server](#server)
+    - [validator](#validator)
     - [versioning](#versioning)
     - [apiExplorerVisible](#apiexplorervisible)
     - [apiExplorerPath](#apiexplorerpath)
-    - [apiExplorerStaticPath](#apiexplorerstaticspath)
+    - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
   - [Contrller](#contrller)
@@ -277,25 +278,35 @@ string required
 
 Api doc's path, support OpenAPI2.0 json,yaml.
 
-### controllerDir  
+### controllerDir
 
 string required
 
 Dir of controllers, it's used when set  **file and handler** of a api.
 
-### port 
+### port
 
 number optional default 80
 
 The port is koa server listening, used to be log out api-explorer url.
 
-### server  
+### server
 
 net.Socket optional
 
 The Socket is koa serving, which will find serving **port** automatically. No need to set *port* and *server* together.
 
-### versioning 
+### validator
+
+string optional default is *ajv*
+
+You can choice [ajv](https://github.com/epoberezkin/ajv), [tv4](https://github.com/geraintluff/tv4) or *null*. **I'm still finding a perfect Json Schema validator**.
+
+* ajv Best performance in [Benchmark ](https://github.com/ebdrup/json-schema-benchmark), support data type coercion, this feature is very suit for query parameters, because *querystring* always pase json value as string. But at this moment, It is not support add custom format to other data type, except *string*.
+* tv4 Not support data type coercion, but support add custom fromat to all data type.
+* null Not use parameter validator.
+
+### versioning
 
 boolean optional default true
 
@@ -319,7 +330,7 @@ string optional default*/koa-oai-router*
 
 Static file path of swagger-ui is only set when your static file path is */koa-oai-router*.
 
-### jsonSchemaFormatters 
+### jsonSchemaFormatters
 
 object optional default {}
 
@@ -330,9 +341,14 @@ Key in object is the **format** keyword.
 Value in object must be a function with parameters **data** and **schema**.
 
 * data filed to validate
-* schema 
+* schema
 
 When it is valid you should return **null**. When it is invalid you should return error **string**.
+
+Return what kind of result depends on which validator you choice.
+
+- ajv if valid return true, otherwise return false.
+- tv4 if valid return null, otherwise return error message string.
 
 ```javascript
 import Koa from ('koa');
@@ -413,7 +429,7 @@ The function is exported from the **file**. The following functions are same to 
 
 Validation is based on [JSON-Schema Draft 4](http://json-schema.org/latest/json-schema-core.html#anchor8), and it enlarges some OpenAPI's format, like *int32,int64,float,double*.
 
-At this moment **query, body, path and header** is supported. The validate order is *header -> path -> query -> body*. Any step validate failed will throw HTTP 400 error and response error message. 
+At this moment **query, body, path and header** is supported. The validate order is *header -> path -> query -> body*. Any step validate failed will throw HTTP 400 error and response error message.
 
 Recommended Reading:
 
@@ -605,6 +621,6 @@ When page is not inputed, the api will send HTTP 400 with the response body hand
 * Support OpenAPI/Swagger1.x
 * Support OpenAPI/Swagger2.0 Security keyword
 * Support Response validate
-* Built-in more format validation(e-mail, ip, Tel)
+* Research more Json Schema validator
 * More unit test
 * Benchmark
