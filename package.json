@@ -1,6 +1,6 @@
 {
   "name": "koa-oai-router",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/oai-router.js",
   "scripts": {
     "clean": "rm -rf .nyc_output coverage dist",
@@ -67,7 +67,6 @@
     "babel-plugin-transform-es2015-destructuring": "^6.19.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-plugin-transform-es2015-parameters": "^6.18.0",
-    "codecov": "^1.0.1",
     "eslint-config-crocodile": "^1.0.0",
     "koa": "^2.0.0-alpha.7",
     "koa-bodyparser": "^3.2.0",
