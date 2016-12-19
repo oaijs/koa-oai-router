@@ -1,6 +1,6 @@
 {
   "name": "koa-oai-router",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "dist/oai-router.js",
   "scripts": {
     "clean": "rm -rf .nyc_output coverage dist",
