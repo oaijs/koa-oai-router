@@ -9,7 +9,12 @@ function post(ctx, next) {
   ctx.body = people;
 }
 
+function crash() {
+  ctx.body = a.a;
+}
+
 module.exports = {
   get: get,
-  post: post
+  post: post,
+  crash: crash
 };
