@@ -182,6 +182,13 @@ paths:
         handler: crash
       tags:
       - pets
+      parameters:
+        - name: token
+          in: header
+          type: string
+          required: true
+          pattern: token.*
+          description: token in http header.
       responses:
         200:
           description: unexpected error
