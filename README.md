@@ -58,6 +58,8 @@ I truly hope that this library can help those who are in the same trouble. Happy
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
+  - [Router.use(keyword, fn)](#routerusekeyword-fn)
+  - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [Contrller](#contrller)
     - [file](#file)
     - [handler](#handler)
@@ -391,6 +393,20 @@ You can design your custom error handler by doing this. The function has paramet
 * ctx koa ctx
 * schema Json Schema of the api
 
+
+
+## Router.use(keyword, fn)
+
+TODO
+
+
+
+## Router.extend(endpoint, fn)
+
+TODO
+
+
+
 ## Contrller
 
 **koa-oai-router** enlarges OpenAPI, now we will recognize **x-oai-controller** keyword in all **method**.
@@ -525,7 +541,7 @@ definitions:
 
 ## Response validate（incomplete）
 
-TODO
+
 
 ## Error handle
 
