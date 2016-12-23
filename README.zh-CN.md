@@ -60,6 +60,8 @@
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
+  - [Router.use(keyword, fn)](#routerusekeyword-fn)
+  - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
     - [file](#file)
     - [handler](#handler)
@@ -389,6 +391,20 @@ function 可选 [默认处理函数](#)
 * schema 该接口的schema
 
 
+
+
+## Router.use(keyword, fn)
+
+TODO
+
+
+
+## Router.extend(endpoint, fn)
+
+TODO
+
+
+
 ## 接口的控制器
 
 **koa-oai-router**对OpenAPI进行了扩展，会识别API文档中每个path下的method中包含的**x-oai-controller**字段。
@@ -522,7 +538,7 @@ definitions:
 
 ## 结果校验（暂不支持）
 
-TODO..
+
 
 ## 错误处理
 
