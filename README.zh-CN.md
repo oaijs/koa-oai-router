@@ -60,6 +60,7 @@
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
+    - [defaultResponseSchemas](#defaultResponseSchemas)
   - [Router.use(keyword, fn)](#routerusekeyword-fn)
   - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
@@ -390,20 +391,17 @@ function 可选 [默认处理函数](#)
 * ctx
 * schema 该接口的schema
 
+### defaultResponseSchemas
 
-
+TODO
 
 ## Router.use(keyword, fn)
 
 TODO
 
-
-
 ## Router.extend(endpoint, fn)
 
 TODO
-
-
 
 ## 接口的控制器
 

@@ -159,6 +159,32 @@ paths:
           description: unexpected error
           schema:
             "$ref": "#/definitions/Error"
+  "/ctx-throw":
+    get:
+      summary: Info for a specific pet
+      x-oai-controller:
+      - file: people
+        handler: ctxThrow
+      tags:
+      - pets
+      responses:
+        '200':
+          description: Expected response to a valid request
+          schema:
+            "$ref": "#/definitions/Pets"
+  "/raw-throw":
+    get:
+      summary: Info for a specific pet
+      x-oai-controller:
+      - file: people
+        handler: rawThrow
+      tags:
+      - pets
+      responses:
+        '200':
+          description: Expected response to a valid request
+          schema:
+            "$ref": "#/definitions/Pets"
 definitions:
   Pet:
     required:

@@ -58,6 +58,7 @@ I truly hope that this library can help those who are in the same trouble. Happy
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
+    - [defaultResponseSchemas](#defaultResponseSchemas)
   - [Router.use(keyword, fn)](#routerusekeyword-fn)
   - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [Contrller](#contrller)
@@ -393,19 +394,17 @@ You can design your custom error handler by doing this. The function has paramet
 * ctx koa ctx
 * schema Json Schema of the api
 
+### defaultResponseSchemas
 
+TODO
 
 ## Router.use(keyword, fn)
 
 TODO
 
-
-
 ## Router.extend(endpoint, fn)
 
 TODO
-
-
 
 ## Contrller
 

@@ -14,8 +14,21 @@ function crash(ctx, next) {
   ctx.body = status['undefined'];
 }
 
+function ctxThrow(ctx, next) {
+  ctx.throw(403, {error_code: -1, error_description: 'Forbidden'})
+}
+
+function rawThrow(ctx, next) {
+  let err = new Error();
+  err.error_code = -2;
+  err.error_description = 'Internal Error';
+  throw err;
+}
+
 module.exports = {
   get: get,
   post: post,
-  crash: crash
+  crash: crash,
+  ctxThrow: ctxThrow,
+  rawThrow: rawThrow
 };
