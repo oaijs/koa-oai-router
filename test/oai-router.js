@@ -5,6 +5,43 @@ import request from 'supertest';
 
 import Router from '../lib/oai-router';
 
+let server = null;
+test.cb.before(t => {
+  const app = new Koa();
+  server = app.listen();
+
+  const schema = {
+    "title": "defaultError",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "integer"
+        },
+        "error_description": {
+          "type": "string"
+        },
+      }
+    }
+  };
+
+  const opt = {
+    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
+    controllerDir: `${__dirname}/fixtures/controller`,
+    defaultResponseSchemas: {
+      403: schema,
+      500: schema
+    }
+  };
+
+  const router = new Router(opt);
+
+  app.use(bodyParser());
+  app.use(router.routes());
+
+  setTimeout(t.end, 500);
+})
+
 test('load wrong apiDoc', t => {
   const app = new Koa();
   const opt = {
@@ -94,6 +131,26 @@ test('with no apiExplorerVisible option', t => {
   app.use(router.routes());
   app.use(router.apiExplorer());
   t.pass();
+})
+
+test.cb('with no defaultResponseSchemas option', t => {
+  request(server)
+    .get('/v1/api/ctx-throw')
+    .expect(403)
+    .end(function(err, res) {
+      t.is(res.body.error_code, -1);
+      t.end();
+    });
+})
+
+test.cb('with no defaultResponseSchemas1 option', t => {
+  request(server)
+    .get('/v1/api/raw-throw')
+    .expect(500)
+    .end(function(err, res) {
+      t.is(res.body.error_code, -2);
+      t.end();
+    });
 })
 
 test('with no validator option', t => {
