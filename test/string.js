@@ -20,19 +20,25 @@ test('version', (t)=> {
 })
 
 test('versionApi', (t)=> {
-  t.is(versionApi(), '');
+  t.is(versionApi(), '/');
 
-  t.is(versionApi(true), '');
-  t.is(versionApi(false), '');
+  t.is(versionApi(true), '/');
+  t.is(versionApi(false), '/');
 
   t.is(versionApi(true, '2.1.0'), '/v2/');
-  t.is(versionApi(false, '2.1.0'), '//');
+  t.is(versionApi(false, '2.1.0'), '/');
 
   t.is(versionApi(true, '2.1.0', 'api', 'test'), '/v2/api/test');
   t.is(versionApi(false, '2.1.0', 'api', 'test'), '/api/test');
 
   t.is(versionApi(true, '34.21.09', 'api', 'test'), '/v34/api/test');
   t.is(versionApi(false, '34.21.09', 'api', 'test'), '/api/test');
+
+  t.is(versionApi(true, '2.1.0', '/', 'test'), '/v2/test');
+  t.is(versionApi(false, '2.1.0', '/', 'test'), '/test');
+
+  t.is(versionApi(true, '2.1.0', '/api'), '/v2/api');
+  t.is(versionApi(false, '2.1.0', '/api'), '/api');
 })
 
 test('routerFormat', (t)=> {
