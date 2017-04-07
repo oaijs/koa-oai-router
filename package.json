@@ -68,7 +68,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-plugin-transform-es2015-parameters": "^6.18.0",
     "eslint-config-crocodile": "^1.0.0",
-    "koa": "^2.0.0-alpha.7",
+    "koa": "2.0.0-alpha.7",
     "koa-bodyparser": "^3.2.0",
     "nyc": "^9.0.1",
     "supertest": "^2.0.1"

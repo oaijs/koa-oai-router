@@ -38,11 +38,13 @@
       var apiDoc = $('#apiDoc').text();
       var apiExplorerPath = $('#apiExplorerPath').text();
       var apiExplorerStaticPath = $('#apiExplorerStaticPath').text();
+      var adjustBasePath = $('#adjustBasePath').text();
 
-      console.log(versioning);
-      console.log(apiDoc);
-      console.log(apiExplorerPath);
-      console.log(apiExplorerStaticPath);
+      console.log('versioning:', versioning);
+      console.log('apiDoc:', apiDoc);
+      console.log('apiExplorerPath:', apiExplorerPath);
+      console.log('apiExplorerStaticPath:', apiExplorerStaticPath);
+      console.log('adjustBasePath:', adjustBasePath);
 
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
@@ -118,6 +120,7 @@
 <p id="apiDoc" style="display: none;">{{apiDoc}}</p>
 <p id="apiExplorerPath" style="display: none;">{{apiExplorerPath}}</p>
 <p id="apiExplorerStaticPath" style="display: none;">{{apiExplorerStaticPath}}</p>
+<p id="adjustBasePath" style="display: none;">{{adjustBasePath}}</p>
 
 <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
