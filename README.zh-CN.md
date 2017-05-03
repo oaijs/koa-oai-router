@@ -35,8 +35,6 @@
 
 *哦，对了，PR & Issue & Star are welcome! : )*
 
-**<u>注意：目前仍然处于测试阶段，生产环境谨慎使用！！！</u>**
-
 ---
 
 - [Koa-OAI-Router](#koa-oai-router)
@@ -60,7 +58,10 @@
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
-    - [defaultResponseSchemas](#defaultResponseSchemas)
+    - [defaultResponseSchemas](#defaultresponseschemas)
+  - [Router.routes()](#routerroutes)
+  - [Router.apiExplorer()](#routerapiexplorer)
+  - [Router.apiExplorerV3()](#routerapiexplorerv3)
   - [Router.use(keyword, fn)](#routerusekeyword-fn)
   - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
@@ -393,11 +394,130 @@ function 可选 [默认处理函数](#)
 
 ### defaultResponseSchemas
 
-TODO
+定义一个默认的响应schema。
+
+```js
+const commonSchema = {
+  type: 'object',
+  properties: {
+    error_code: {
+      type: 'number',
+    },
+    error_description: {
+      type: 'string',
+    },
+  },
+};
+
+const schemas = {
+  401: {
+    title: 'Unauthorized',
+    schema: commonSchema,
+  },
+  402: {
+    title: 'PaymentRequired',
+    schema: commonSchema,
+  },
+  403: {
+    title: 'Forbidden',
+    schema: commonSchema,
+  },
+  404: {
+    title: 'NotFound',
+    schema: commonSchema,
+  },
+  429: {
+    title: 'TooManyRequests',
+    schema: commonSchema,
+  },
+  500: {
+    title: 'InternalError',
+    schema: commonSchema,
+  },
+};
+```
+
+
+
+
+
+## Router.routes()
+
+Return router middleware which dispatches a route matching the request.
+
+## Router.apiExplorer()
+
+Return router middleware which mounts swagger-ui 2.x. Open **/api-explorer** to explorer you api.
+
+## Router.apiExplorerV3()
+
+Return router middleware which mounts swagger-ui 3.x. Open **/api-explorer-v3** to explorer you api. swagger-ui 3.x support 2.x specification
 
 ## Router.use(keyword, fn)
 
-TODO
+通过此你可以为router设置插件，自定义处理apiDoc中的以**x-oai-**开头的选项。
+
+* keyword是以**x-oai-**开头且不是**x-oai-controller**的字符串
+* fn对应keyword的处理器
+
+例如，我们需要通过apiDoc配置指定接口的缓存时间，我们可以通过如下步骤完成插件。
+
+```yaml
+# 第一步，在apiDoc中为接口配置缓存时长信息
+#     x-oai-cache:
+#       expire: 86400
+# api.yaml
+
+/users/{userId}:
+  get:
+    tags:
+      - User
+    description: find a user by userId
+    x-oai-cache:
+      expire: 86400
+    x-oai-controller:
+      - file: people
+        handler: get
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        type: number
+    responses:
+      default:
+        description: unexpected error
+        schema:
+          $ref: '#/definitions/Error'
+```
+
+```js
+/*
+ * 第二步，开发x-oai-cache插件
+ * 获取apiDoc中x-oai-cache选项的配置信息，并返回一个koa中间件
+ */
+export default (config) => {
+  // config 内容为 {expire: 86400}
+  return (ctx, next) => {
+    // 开发你的插件业务
+  }
+}
+```
+
+```js
+/*
+ * 第三步，将你的业务插件挂载在路由上
+ */
+var router = new Router(opt);
+
+var cachePlugin = new Cache({
+  store: new Redis()
+});
+
+router.use('x-oai-cache', cachePlugin);
+
+app.use(router.routes());
+app.use(router.apiExplorer());
+```
 
 ## Router.extend(endpoint, fn)
 
@@ -629,7 +749,8 @@ definitions:
 
 
 # 计划
-* 支持OpenAPI/Swagger1.x规范
+* ~~支持OpenAPI/Swagger1.x规范~~
+* 支持OpenAPI/Swagger3.0规范
 * 支持OpenAPI/Swagger2.0协议中的Security校验
 * 支持接口的返回结果校验
 * 更多的Json Schema校验引擎调研

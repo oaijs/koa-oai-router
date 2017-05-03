@@ -58,7 +58,10 @@ I truly hope that this library can help those who are in the same trouble. Happy
     - [apiExplorerStaticPath](#apiexplorerstaticpath)
     - [jsonSchemaFormatters](#jsonschemaformatters)
     - [errorHandler](#errorhandler)
-    - [defaultResponseSchemas](#defaultResponseSchemas)
+    - [defaultResponseSchemas](#defaultresponseschemas)
+  - [Router.routes()](#routerroutes)
+  - [Router.apiExplorer()](#routerapiexplorer)
+  - [Router.apiExplorerV3()](#routerapiexplorerv3)
   - [Router.use(keyword, fn)](#routerusekeyword-fn)
   - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
   - [Contrller](#contrller)
@@ -74,8 +77,6 @@ I truly hope that this library can help those who are in the same trouble. Happy
 - [Plan](#plan)
 
 ---
-
-**<u>Notice：Testing stage，Production not recommend！！！</u>**
 
 # Features
 * Built-in Swagger-UI, easy view and debug
@@ -396,11 +397,126 @@ You can design your custom error handler by doing this. The function has paramet
 
 ### defaultResponseSchemas
 
-TODO
+Define default response schemas, if you don't want to write response schema under every api.
+
+```js
+const commonSchema = {
+  type: 'object',
+  properties: {
+    error_code: {
+      type: 'number',
+    },
+    error_description: {
+      type: 'string',
+    },
+  },
+};
+
+const schemas = {
+  401: {
+    title: 'Unauthorized',
+    schema: commonSchema,
+  },
+  402: {
+    title: 'PaymentRequired',
+    schema: commonSchema,
+  },
+  403: {
+    title: 'Forbidden',
+    schema: commonSchema,
+  },
+  404: {
+    title: 'NotFound',
+    schema: commonSchema,
+  },
+  429: {
+    title: 'TooManyRequests',
+    schema: commonSchema,
+  },
+  500: {
+    title: 'InternalError',
+    schema: commonSchema,
+  },
+};
+```
+
+## Router.routes()
+
+Return router middleware which dispatches a route matching the request.
+
+## Router.apiExplorer()
+
+Return router middleware which mounts swagger-ui 2.x. Open **/api-explorer** to explorer you api.
+
+## Router.apiExplorerV3()
+
+Return router middleware which mounts swagger-ui 3.x. Open **/api-explorer-v3** to explorer you api. swagger-ui 3.x supports 2.x specification.
 
 ## Router.use(keyword, fn)
 
-TODO
+Through this, you can extend plugin to handle options which starts with **x-oai-** in apiDoc.
+
+* keyword starts with **x-oai-** , not including **x-oai-controller**.
+* fn is handler of keywords.
+
+For example，we need to configure cache expired time for api through apiDoc. We can extend plugin based on following steps.
+
+```yaml
+# First，configure cache expired time at apiDoc.
+#     x-oai-cache:
+#       expire: 86400
+# api.yaml
+
+/users/{userId}:
+  get:
+    tags:
+      - User
+    description: find a user by userId
+    x-oai-cache:
+      expire: 86400
+    x-oai-controller:
+      - file: people
+        handler: get
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        type: number
+    responses:
+      default:
+        description: unexpected error
+        schema:
+          $ref: '#/definitions/Error'
+```
+
+```js
+/*
+ * Second，develop x-oai-cahce plugin.
+ * Export a function with a argument, and return a koa middleware.
+ */
+export default (config) => {
+  // config is {expire: 86400}
+  return (ctx, next) => {
+    // write your code.
+  }
+}
+```
+
+```js
+/*
+ * Third，mount your plugin to router with keyword.
+ */
+var router = new Router(opt);
+
+var cachePlugin = new Cache({
+  store: new Redis()
+});
+
+router.use('x-oai-cache', cachePlugin);
+
+app.use(router.routes());
+app.use(router.apiExplorer());
+```
 
 ## Router.extend(endpoint, fn)
 
@@ -633,7 +749,8 @@ When page is not inputed, the api will send HTTP 400 with the response body hand
 
 
 # Plan
-* Support OpenAPI/Swagger1.x
+* ~~Support OpenAPI/Swagger1.x~~
+* Support OpenAPI/Swagger3.0
 * Support OpenAPI/Swagger2.0 Security keyword
 * Support Response validate
 * Research more Json Schema validator
