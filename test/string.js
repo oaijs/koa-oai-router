@@ -48,4 +48,5 @@ test('routerFormat', (t)=> {
   t.is(routerFormat('/api/{peopleId}'), '/api/:peopleId');
   t.is(routerFormat('/api/{peopleId}/{mailId}'), '/api/:peopleId/:mailId');
   t.is(routerFormat('/api/{peopleId}/{mailId}/{attachId}'), '/api/:peopleId/:mailId/:attachId');
+  t.is(routerFormat('/api/{people-id}/{mail-id}/{attach-id}'), '/api/:people-id/:mail-id/:attach-id');
 })
