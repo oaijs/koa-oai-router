@@ -749,10 +749,10 @@ When page is not inputed, the api will send HTTP 400 with the response body hand
 
 
 # Plan
-* ~~Support OpenAPI/Swagger1.x~~
-* Support OpenAPI/Swagger3.0
-* Support OpenAPI/Swagger2.0 Security keyword
-* Support Response validate
-* Research more Json Schema validator
-* More unit test
-* Benchmark
+- [x] Support OpenAPI/Swagger1.x
+- [ ] Support OpenAPI/Swagger3.0
+- [ ] Support OpenAPI/Swagger2.0 Security keyword
+- [ ] Support Response validate
+- [ ] Research more Json Schema validator
+- [ ] More unit test
+- [ ] Benchmark
