@@ -1,10 +1,12 @@
 .idea
 .DS_Store
 .nyc_output
+.vscode
 coverage
 dist
 dist-test
 node_modules
+example
 
 *.log
 *.map
