@@ -6,7 +6,6 @@ coverage
 dist
 dist-test
 node_modules
-example
 
 *.log
 *.map

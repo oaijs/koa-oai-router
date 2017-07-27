@@ -11,7 +11,7 @@
     "check-coverage": "node_modules/.bin/nyc check-coverage --lines 90 --functions 90 --branches 90",
     "test-travis": "npm run test && node_modules/.bin/nyc report --reporter=text-lcov > coverage/lcov.info && npm run check-coverage",
     "lint": "node_modules/.bin/eslint .",
-    "example": "npm run build && DEBUG=koa-oai-router* node --harmony example/app.js",
+    "example": "npm run build && DEBUG=koa-oai-router* node example/app.js",
     "prepublish": "npm run build"
   },
   "keywords": [
