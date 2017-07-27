@@ -4,7 +4,7 @@
   "main": "dist/oai-router.js",
   "scripts": {
     "clean": "rm -rf .nyc_output coverage dist",
-    "build": "npm run clean && babel lib --ignore swagger-ui -d dist && cp -r lib/swagger-ui dist",
+    "build": "npm run clean && babel lib -d dist",
     "test": "node_modules/.bin/nyc node_modules/.bin/ava -v test",
     "test-cov": "npm run test && npm run analyze-coverage && npm run check-coverage",
     "analyze-coverage": "node_modules/.bin/nyc report --reporter=html",

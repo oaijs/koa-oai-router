@@ -22,4 +22,3 @@ const router = new Router(opt);
 
 app.use(router.routes());
 app.use(router.apiExplorer());
-app.use(router.apiExplorerV3());
