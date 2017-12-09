@@ -1,134 +1,65 @@
 import test from 'ava';
-import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
-import request from 'supertest';
+import {request} from './helpers/server';
 
-import Router from '../lib/oai-router';
-
-test.cb('api explorer', t => {
-  const app = new Koa();
-  const opt = {
+test('api-explorer apiExplorerVisible=true', async (t) => {
+  const req = await request({
     apiDoc: `${__dirname}/fixtures/api/api.yaml`,
-    controllerDir: `${__dirname}/fixtures/controller`,
-    apiExplorerVisible: true
-  };
-  const router = new Router(opt);
-  const server = app.listen();
+    middlewareDir: `${__dirname}/fixtures/controller`,
+  });
 
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.apiExplorer());
+  await req
+  .get('/api-explorer')
+  .expect(200);
 
-  setTimeout(() => {
-    request(server)
-      .get('/api-explorer')
-      .expect(200)
-      .end(function(err, res) {
-        if (err) throw err;
-        t.end();
-      });
-  }, 500)
-})
+  t.pass();
+});
 
-test.cb('no api explorer', t => {
-  const app = new Koa();
-  const opt = {
+test('api-explorer apiExplorerVisible=false', async (t) => {
+  const req = await request({
     apiDoc: `${__dirname}/fixtures/api/api.yaml`,
-    controllerDir: `${__dirname}/fixtures/controller`,
-    apiExplorerVisible: false
-  };
-  const router = new Router(opt);
-  const server = app.listen();
+    middlewareDir: `${__dirname}/fixtures/controller`,
+    apiExplorerVisible: false,
+  });
 
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.apiExplorer());
+  await req
+  .get('/api-explorer')
+  .expect(404);
 
-  setTimeout(() => {
-    request(server)
-      .get('/api-explorer')
-      .expect(404)
-      .end(function(err, res) {
-        if (err) throw err;
-        t.end();
-      });
-  }, 500)
-})
+  t.pass();
+});
 
-test.cb('default apiExplorerVisible option', t => {
-  const app = new Koa();
-  const opt = {
+test('api-explorer apiExplorerPath: /api-explorer-custom', async (t) => {
+  const req = await request({
     apiDoc: `${__dirname}/fixtures/api/api.yaml`,
-    controllerDir: `${__dirname}/fixtures/controller`,
-  };
-  const router = new Router(opt);
-  const server = app.listen();
+    middlewareDir: `${__dirname}/fixtures/controller`,
+    apiExplorerPath: '/api-explorer-custom',
+  });
 
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.apiExplorer());
+  await req
+  .get('/api-explorer-custom')
+  .expect(200);
 
-  setTimeout(() => {
-    request(server)
-      .get('/api-explorer')
-      .expect(200)
-      .end(function(err, res) {
-        if (err) throw err;
-        t.end();
-      });
-  }, 500)
-})
+  await req
+  .get('/api-explorer')
+  .expect(404);
 
-test.cb('custom api explorer', t => {
-  const app = new Koa();
-  const opt = {
+  t.pass();
+});
+
+test('api-explorer apiExplorerStaticPath: /koa-oai-router-custom', async (t) => {
+  const req = await request({
     apiDoc: `${__dirname}/fixtures/api/api.yaml`,
-    controllerDir: `${__dirname}/fixtures/controller`,
-    apiExplorerVisible: true,
-    apiExplorerPath: '/custom-api-explorer',
-    apiExplorerStaticPath: '/apiExplorerStaticPath'
-  };
-  const router = new Router(opt);
-  const server = app.listen();
+    middlewareDir: `${__dirname}/fixtures/controller`,
+    apiExplorerStaticPath: '/koa-oai-router-custom',
+  });
 
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.apiExplorer());
+  await req
+  .get('/koa-oai-router-custom/api.yaml')
+  .expect(200);
 
-  setTimeout(() => {
-    request(server)
-      .get('/custom-api-explorer')
-      .expect(200)
-      .end(function(err, res) {
-        if (err) throw err;
-        t.end();
-      });
-  }, 500)
-})
+  await req
+  .get('/koa-oai-router/api.yaml')
+  .expect(404);
 
-test.cb('custom api explorer static', t => {
-  const app = new Koa();
-  const opt = {
-    apiDoc: `${__dirname}/fixtures/api/api.yaml`,
-    controllerDir: `${__dirname}/fixtures/controller`,
-    apiExplorerVisible: true,
-    apiExplorerPath: '/custom-api-explorer',
-    apiExplorerStaticPath: '/apiExplorerStaticPath'
-  };
-  const router = new Router(opt);
-  const server = app.listen();
-
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.apiExplorer());
-
-  setTimeout(() => {
-    request(server)
-      .get('/apiExplorerStaticPath')
-      .expect(200)
-      .end(function(err, res) {
-        if (err) throw err;
-        t.end();
-      });
-  }, 500)
-})
+  t.pass();
+});
