@@ -1,6 +1,6 @@
 {
   "name": "koa-oai-router",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.1",
   "main": "lib",
   "scripts": {
     "clean": "rm -rf coverage lib",
@@ -56,7 +56,7 @@
     "eslint-config-airbnb-base": "^11.0.0",
     "eslint-plugin-import": "^2.2.0",
     "jest": "^22.1.2",
-    "koa": "2.0.0-alpha.7",
+    "koa": "^2.4.1",
     "koa-bodyparser": "^3.2.0",
     "supertest": "^2.0.1"
   },
