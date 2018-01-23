@@ -6,7 +6,3 @@ node_js:
   - "9"
 script: "npm run ci"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
-branches:
-  only:
-    - master
-    - "2.0.0"
