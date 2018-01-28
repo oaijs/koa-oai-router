@@ -8,8 +8,6 @@
 [![Downloads][downloads-image]][downloads-url]
 [![Dependency Status][david-img]][david-url]
 
-[![NPM](https://nodei.co/npm/koa-oai-router.png?downloads=true&stars=true)](https://nodei.co/npm/koa-oai-router/)
-
 [travis-img]: https://travis-ci.org/BiteBit/koa-oai-router.svg?branch=master
 [travis-url]: https://travis-ci.org/BiteBit/koa-oai-router
 [coveralls-img]: https://coveralls.io/repos/github/BiteBit/koa-oai-router/badge.svg?branch=master
@@ -24,12 +22,30 @@
 [license-url]: http://opensource.org/licenses/MIT
 [node-image]: https://img.shields.io/badge/node.js-v4.0.0-blue.svg
 [node-url]: http://nodejs.org/download/
+[koa-router]: https://github.com/alexmingoia/koa-router
+[oai]: https://github.com/OAI/OpenAPI-Specification
+[swagger]: http://swagger.io
+[swagger-ui]: http://swagger.io/swagger-ui
+[jsonschema]: http://json-schema.org
+[oai-paths]: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#pathsObject
+[oai-definitions]: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#definitionsObject
+[oai-router-middleware]: https://github.com/oaijs/koa-oai-router-middleware
+[oai-router-parameters]: https://github.com/oaijs/koa-oai-router-parameters
+[oai-router-responses]: https://github.com/oaijs/koa-oai-router-responses
+[oai-router-correction]: https://github.com/oaijs/koa-oai-router-correction
+[oai-router-cache]: https://github.com/oaijs/koa-oai-router-cache
+[oai-router-rbac]: https://github.com/oaijs/koa-oai-router-rbac
+[oai-router-examples]: https://github.com/oaijs/koa-oai-router-examples
+[migration]: ./docs/zh/migration.md
+[usage-guides]: ./docs/zh/usage-guides.md
+[references]: ./docs/zh/references.md
+[api-explorer-img]: ./docs/api-explorer.png?raw=true
 
 [中文](./README.zh-CN.md)    [English](./README.md)
 
-我使用过Markdown，Wiki管理接口文档，过程实在难以称得上美好，工作量巨大并且十分无趣。接口的变更需要维护相关文档；接口无法方便地进行调试、测试；以及接口的管理完全依赖于人。这些问题不仅导致接口文档难以维持很高的质量，而且还会让开发人员花费更多的时间在接口调试上，甚至影响项目进度。最最最重要的是，这可能会影响到我们的心情，这可是无法忍受的事情 : ( 。
+我使用过Markdown，Wiki管理接口文档，过程实在难以称得上美好，工作量巨大并且十分无趣。接口的变更需要维护相关文档；接口无法方便地进行调试、测试；以及接口的管理完全依赖于人。这些问题不仅导致接口文档难以维持很高的质量，而且还会让开发人员花费更多的时间在接口调试上，甚至影响项目进度。最最最重要的是，这可能会影响到我们的心情，这可是无法忍受的事情 : (
 
-于是乎我便四处寻求解决方案，功夫不负有心人。我发现了[The OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification)，并且OpenAPI协议生态圈也很完善。[Swagger](http://swagger.io/) 包含了很多工具链，[Swagger UI](http://swagger.io/swagger-ui/)可以自动根据协议文件生成接口文档。而OpenAPI中的数据类型和数据模型是基于[JSON-Schema Draft 4](http://json-schema.org/latest/json-schema-core.html#anchor8)。
+于是乎我便四处寻求解决方案，功夫不负有心人。我发现了[OpenAPI Specification][oai]，并且OpenAPI协议生态圈也很完善。[Swagger][swagger] 包含了很多工具链，[Swagger UI][swagger-ui]可以自动根据协议文件生成接口文档。而OpenAPI中的数据类型和数据模型是基于[JSON-Schema Draft 4][jsonschema]。
 
 希望此库可以帮到有同样需求的你，happy coding。
 
@@ -37,722 +53,324 @@
 
 ---
 
-- [Koa-OAI-Router](#koa-oai-router)
-- [特性](#%E7%89%B9%E6%80%A7)
-- [安装](#%E5%AE%89%E8%A3%85)
-- [快速上手](#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)
-  - [新建API描述文档](#%E6%96%B0%E5%BB%BAapi%E6%8F%8F%E8%BF%B0%E6%96%87%E6%A1%A3)
-  - [新建控制器](#%E6%96%B0%E5%BB%BA%E6%8E%A7%E5%88%B6%E5%99%A8)
-  - [新建koa app](#%E6%96%B0%E5%BB%BAkoa-app)
-  - [使用api-explorer](#%E4%BD%BF%E7%94%A8api-explorer)
-- [使用说明](#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
-  - [Router的参数](#router%E7%9A%84%E5%8F%82%E6%95%B0)
-    - [apiDoc](#apidoc)
-    - [controllerDir](#controllerdir)
-    - [port](#port)
-    - [server](#server)
-    - [validator](#validator)
-    - [versioning](#versioning)
-    - [apiExplorerVisible](#apiexplorervisible)
-    - [apiExplorerPath](#apiexplorerpath)
-    - [apiExplorerStaticPath](#apiexplorerstaticpath)
-    - [jsonSchemaFormatters](#jsonschemaformatters)
-    - [errorHandler](#errorhandler)
-    - [defaultResponseSchemas](#defaultresponseschemas)
-  - [Router.routes()](#routerroutes)
-  - [Router.apiExplorer()](#routerapiexplorer)
-  - [Router.apiExplorerV3()](#routerapiexplorerv3)
-  - [Router.use(keyword, fn)](#routerusekeyword-fn)
-  - [Router.extend(endpoint, fn)](#routerextendendpoint-fn)
-  - [接口的控制器](#%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%8E%A7%E5%88%B6%E5%99%A8)
-    - [file](#file)
-    - [handler](#handler)
-  - [参数校验](#%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C)
-    - [header](#header)
-    - [path](#path)
-    - [query(formData)](#queryformdata)
-    - [body](#body)
-  - [结果校验（暂不支持）](#%E7%BB%93%E6%9E%9C%E6%A0%A1%E9%AA%8C%E6%9A%82%E4%B8%8D%E6%94%AF%E6%8C%81)
-  - [错误处理](#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86)
-- [计划](#%E8%AE%A1%E5%88%92)
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+<!-- code_chunk_output -->
+
+* [Koa-OAI-Router](#koa-oai-router)
+* [特性](#特性)
+* [迁移](#迁移)
+* [安装](#安装)
+* [快速入门](#快速入门)
+	* [编写WEB服务](#编写web服务)
+	* [编写业务中间件](#编写业务中间件)
+	* [编写Api描述文档](#编写api描述文档)
+		* [编写基础信息](#编写基础信息)
+		* [编写`paths`信息](#编写paths信息)
+		* [编写`definitions`信息](#编写definitions信息)
+	* [体验api-explorer](#体验api-explorer)
+* [文档](#文档)
+* [生态](#生态)
+* [计划](#计划)
+
+<!-- /code_chunk_output -->
 
 ---
 
 # 特性
 * 内置Swagger-UI，方便查看、调试接口
-* 使用OpenAPI/Swagger API文档自动生成Koa路由，并支持参数校验
 * 支持OpenAPI/Swagger2.0规范，支持json、yaml格式
-* 支持基于JsonSchema V4的接口query、body、path、header参数校验
-* 支持自定义JsonSchema format校验
-* 支持自定义接口错误处理
+* 支持更友好、方便的API文档切分方案
+* 支持自定义插件（中间件加载、表单校验、响应处理、错误处理等将以插件形式提供）
+* 继承自[Koa-Router][koa-router]，保持原功能、特性，性能。
+
+# 迁移
+如果你不是1.x的用户，请直接跳过本部分内容。
+如果你是1.x的用户并且想升级到2.0版本，很抱歉你将无法傻瓜式的升级到2.0版本，请仔细阅读本部分的内容[Migration][migration]并且按照操作手册升级。
 
 # 安装
-
-> For koa@>=2.x (next):
-
-```bash
-npm install koa-oai-router@next --save
+```sh
+# required koa 2.x
+> npm install koa-oai-router --save
 ```
 
-> For koa@<2.x:
+# 快速入门
+下面将带你学习如何使用router构建一个良好组织结构和配备接口文档的Web Server。
+本例中基本涉及了router的所有重点内容，包括：
+* 配置router
+* 配置插件
+* 挂载插件到router
+* 挂载router到app
+* 编写接口描述文档
+* 使用插件
+* 使用api-explorer
 
-**暂不支持！**
+我们的目标是：
+* 创建一个REST API Server
+* 编写一个pets查询接口，并返回查询到的pets数组
+* 编写一个pets新建接口，并返回pet和id
+* 生成接口文档，体验api-explorer
 
-# 快速上手
+下面我们就正式开始喽。
 
-## 新建API描述文档
-如果你不了解如何新建该文件，请参考[OpenAPI](https://github.com/OAI/OpenAPI-Specification)。
-
-```yaml
-# api/api.yaml
-
-swagger: '2.0'
-info:
-  version: 1.0.0
-  title: koa-oai-router
-consumes:
-  - application/json
-produces:
-  - application/json
-basePath: /api
-paths:
-  /people:
-    get:
-      tags:
-        - People
-      description: find a people by name or mobile
-      x-oai-controller:
-        - file: people
-          handler: get
-      parameters:
-        - name: name
-          in: query
-          type: string
-        - name: mobile
-          in: query
-          type: string
-      responses:
-        200:
-          description: people's info
-          schema:
-            $ref: '#/definitions/People'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      tags:
-        - People
-      description: input a people's info
-      x-oai-controller:
-        - file: people
-          handler: post
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/People'
-      responses:
-        200:
-          description: people's info
-          schema:
-            $ref: '#/definitions/People'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-definitions:
-  People:
-    type: object
-    required:
-      - name
-      - sex
-      - height
-      - weight
-    properties:
-      name:
-        type: string
-      sex:
-        type: string
-        enum:
-          - male
-          - female
-      height:
-        type: integer
-        format: int32
-        minimum: 10
-        maximum: 1000
-      weight:
-        type: number
-        format: float
-        minimum: 50
-        maximum: 200
-      mobile:
-        type: string
-  Error:
-    title: Error
-    type: object
-    required:
-      - status
-      - error
-    properties:
-      status:
-        type: integer
-      path:
-        type: string
-      error:
-        type: string
-      detail:
-        type: object
-```
-
-## 新建控制器
-
-在这里添加你的业务逻辑
-
+## 编写WEB服务
 ```javascript
-// controllers/people.js
+// ./app.js
 
-var people = {name: 'BiteBit'};
+const Koa = require('koa');
+const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
+const Router = require('koa-oai-router');
+const middleware = require('koa-oai-router-middleware');
 
-function get(ctx, next) {
-  ctx.body = people;
+const app = new Koa();
+
+// *配置router - 从api目录下加载接口描述并生成api文档
+const router = new Router({
+  apiDoc: './api',
+});
+
+// *配置插件 - 识别api文档中的x-oai-middleware并从controllers中加载相应的中间件
+// *挂载插件到router
+router.mount(middleware('./controllers'));
+
+app.use(logger());
+app.use(bodyParser());
+// *挂载router到app
+app.use(router.routes());
+
+app.listen(3000);
+```
+
+## 编写业务中间件
+创建业务中间件目录`controllers`并编写业务中间件。
+```js
+// ./controllers/pets.js
+
+const database = [];
+
+// 根据tags查询数据库中的pets，并根据limit限制查询结果。
+async function get(ctx, next) {
+  const { tags = '', limit = 999 } = ctx.request.query;
+  const tagsArray = tags.split(',');
+  const docs = [];
+
+  database.forEach((item, idx) => {
+    if (tagsArray.indexOf(item.tag) !== -1 && docs.length < limit) {
+      item.id = idx + 1;
+      docs.push(item);
+    }
+  });
+
+  ctx.response.body = docs;
 }
 
-function post(ctx, next) {
-  people = ctx.request.body;
-  ctx.body = people;
+// 新建一个pet存储到数据库中。
+async function post(ctx, next) {
+  const body = ctx.request.body;
+
+  database.push(body);
+
+  ctx.response.body = {
+    id: database.length,
+    name: body.name,
+    tag: body.tag,
+  };
 }
 
 module.exports = {
-  get: get,
-  post: post
+  get,
+  post,
 };
 ```
 
-## 新建koa app
-
-```javascript
-// app.js
-
-import Koa from ('koa');
-import bodyParser from ('koa-bodyparser');
-import Router from ('koa-oai-router');
-
-const app = new Koa();
-const server = app.listen(9000);
-
-app.use(bodyParser());
-
-// 配置koa-oai-router选项
-var opt = {
-  // API文档路径
-  apiDoc: './api/api.yaml',
-  // controllers的目录
-  controllerDir: './controllers',
-  // 从server中获取监听的端口，为了方便打开api-explorer
-  server: server,
-  // 对接口做版本控制
-  versioning: true,
-  // 展示api-explorer
-  apiExplorerVisible: true
-};
-
-var router = new Router(opt);
-// 挂载由apiDoc识别的接口
-app.use(router.routes());
-// 挂载api-explorer工具
-app.use(router.apiExplorer());
-```
-
-## 使用api-explorer
-
-根据提示，用浏览器打开http://127.0.0.1:9000/api-explorer，测试你的接口吧！
-
-![Api Explorer](./images/api-explorer.png?raw=true)
-
-# 使用说明
-
-## Router的参数
-
-### apiDoc
-
-string 必须
-
-api描述文件的路径，目前支持OpenAPI2.0的json/yaml格式文件。
-
-### controllerDir
-
-string 必须
-
-控制器所在的文件夹目录，主要的业务逻辑处理入口。
-
-### port
-
-number 可选 默认80
-
-koa服务监听的端口，用于生成api-explorer链接提示信息。
-
-### server
-
-net.Socket 可选
-
-koa服务监听时返回的Socket，用于自动获取服务的端口，也是用于生成api-explorer链接提示信息。当*port*与*server*同时指定时，优先使用*port*。*server*与*port*设置其一即可。
-
-### validator
-
-string 可选 默认ajv
-
-选择使用的校验引擎[ajv](https://github.com/epoberezkin/ajv)，[tv4](https://github.com/geraintluff/tv4)或者设置**null**不使用校验引擎。这两个校验引擎并不是都很完美，我任然在寻找更合适的校验引擎
-
-* ajv 在Json Schema的[Benchmark ](https://github.com/ebdrup/json-schema-benchmark)中表现最优秀，并且支持数据类型被动转换，这个特性很适合做query的校验，因为querystring解析出Json Object的值总是字符串类型。但是目前对于Json Schema的自定义format支持仅限于string类型。
-* tv4 在Json Schema的[Benchmark ](https://github.com/ebdrup/json-schema-benchmark)中表现一般，不支持数据类型的被动转换。但是对于Json Schema的自定义format支持不限于string类型。
-
-### versioning
-
-boolean 可选 默认true
-
-是否使用主版本号对接口做版本管理。即如果API描述文档版本号是"1.2.3"，那么接口地址会自动增加"/v1/xxx"的前缀。
-如果想在接口中体现更多的版本信息，可关闭该选项，在API描述文档中的basePath字段手动管理。
-
-### apiExplorerVisible
-
-boolean 可选 默认true
-
-是否显示api-explorer，建议生产环境不要显示api-explorer。
-
-### apiExplorerPath
-
-string 可选 默认*/api-explorer*
-
-api-explorer工具的路径。
-
-### apiExplorerStaticPath
-
-string 可选（不推荐设置） 默认*/koa-oai-router*
-
-swagger-ui静态资源的目录，除非和你的静态资源目录发生冲突。
-
-### jsonSchemaFormatters
-
-object 可选 默认{}
-
-是否为Json Schema添加自定义format校验器。
-
-object的key为自定义format的关键字。
-object的key对应的value是一个函数。参数列表为(data, schema)。
-
-* data 需要校验的数据。
-* schema 该数据对应的Json Schema。
-
-校验结果依赖于你使用哪个校验引擎。
-
-* ajv 校验函数返回true表示通过，返回false表示校验失败。
-* tv4 校验函数返回null表示校验通过，返回string表示校验失败（该错误字符串将作为错误信息）。
-
-```javascript
-import Koa from ('koa');
-import bodyParser from ('koa-bodyparser');
-import Router from ('koa-oai-router');
-
-const app = new Koa();
-const server= app.listen(9000);
-
-app.use(bodyParser());
-
-var opt = {
-  apiDoc: './api/api.yaml',
-  controllerDir: './controllers',
-  server: server
-  jsonSchemaFormatters: {
-    "zh-CN": (data, schema)=> {
-      return data !== 'zh-CN' ? null : 'language is not zh-CN';
-    }
-  }
-};
-
-const router = new Router(opt);
-app.use(router.routes());
-app.use(router.apiExplorer());
-```
-
-### errorHandler
-
-function 可选 [默认处理函数](#)
-
-如果想自己实现错误结果定义，那么你需要实现该函数，该函数有三个参数(error, ctx, schema)，并返回处理结果。
-
-* error Error对象，由[http-errors](https://github.com/jshttp/http-errors)创建。如果是400错误，那么error对象额外包含以下字段
-  * type string 校验失败的参数类型，header, path, query和body。
-  * path string 参数校验失败的字段
-  * error string 参数校验失败的错误提示
-  * data object 参与校验的参数
-  * detail object 校验失败原始错误
-* ctx
-* schema 该接口的schema
-
-### defaultResponseSchemas
-
-定义一个默认的响应schema。
-
-```js
-const commonSchema = {
-  type: 'object',
-  properties: {
-    error_code: {
-      type: 'number',
-    },
-    error_description: {
-      type: 'string',
-    },
-  },
-};
-
-const schemas = {
-  401: {
-    title: 'Unauthorized',
-    schema: commonSchema,
-  },
-  402: {
-    title: 'PaymentRequired',
-    schema: commonSchema,
-  },
-  403: {
-    title: 'Forbidden',
-    schema: commonSchema,
-  },
-  404: {
-    title: 'NotFound',
-    schema: commonSchema,
-  },
-  429: {
-    title: 'TooManyRequests',
-    schema: commonSchema,
-  },
-  500: {
-    title: 'InternalError',
-    schema: commonSchema,
-  },
-};
-```
-
-
-
-
-
-## Router.routes()
-
-Return router middleware which dispatches a route matching the request.
-
-## Router.apiExplorer()
-
-Return router middleware which mounts swagger-ui 2.x. Open **/api-explorer** to explorer you api.
-
-## Router.apiExplorerV3()
-
-Return router middleware which mounts swagger-ui 3.x. Open **/api-explorer-v3** to explorer you api. swagger-ui 3.x support 2.x specification
-
-## Router.use(keyword, fn)
-
-通过此你可以为router设置插件，自定义处理apiDoc中的以**x-oai-**开头的选项。
-
-* keyword是以**x-oai-**开头且不是**x-oai-controller**的字符串
-* fn对应keyword的处理器
-
-例如，我们需要通过apiDoc配置指定接口的缓存时间，我们可以通过如下步骤完成插件。
-
+## 编写Api描述文档
+如果你还不了解[OpenAPI][oai]，请仔细阅读[OpenAPI][oai]。
+
+### 编写基础信息
+在这里你可以对服务的基础信息进行描述，如服务的版本，基础路径，传输协议，作者，许可协议等。
 ```yaml
-# 第一步，在apiDoc中为接口配置缓存时长信息
-#     x-oai-cache:
-#       expire: 86400
-# api.yaml
+# ./api/api.yaml
 
-/users/{userId}:
-  get:
-    tags:
-      - User
-    description: find a user by userId
-    x-oai-cache:
-      expire: 86400
-    x-oai-controller:
-      - file: people
-        handler: get
-    parameters:
-      - name: userId
-        in: path
-        required: true
-        type: number
-    responses:
-      default:
-        description: unexpected error
-        schema:
-          $ref: '#/definitions/Error'
-```
-
-```js
-/*
- * 第二步，开发x-oai-cache插件
- * 获取apiDoc中x-oai-cache选项的配置信息，并返回一个koa中间件
- */
-export default (config) => {
-  // config 内容为 {expire: 86400}
-  return (ctx, next) => {
-    // 开发你的插件业务
-  }
-}
-```
-
-```js
-/*
- * 第三步，将你的业务插件挂载在路由上
- */
-var router = new Router(opt);
-
-var cachePlugin = new Cache({
-  store: new Redis()
-});
-
-router.use('x-oai-cache', cachePlugin);
-
-app.use(router.routes());
-app.use(router.apiExplorer());
-```
-
-## Router.extend(endpoint, fn)
-
-TODO
-
-## 接口的控制器
-
-**koa-oai-router**对OpenAPI进行了扩展，会识别API文档中每个path下的method中包含的**x-oai-controller**字段。
-
-**x-oai-controller**是一个对象数组，每个元素均需包含参数**file**和**handler**。
-
-**如果x-oai-controller包含多个元素，那么中间件处理的优先级按照由上至下依次进行。**
-
-
-```yaml
-paths:
-  /people:
-    get:
-      tags:
-        - People
-      description: find a people by name or mobile
-      x-oai-controller:
-        - file: acl
-          handler: isAdmin
-        - file: people
-          handler: get
-```
-
-### file
-
-表示该接口对应控制器文件的名称。
-
-### handler
-
-控制器文件导出的函数。[koa@next](https://github.com/koajs/koa/tree/v2.x#common-function)
-
-* 支持common function
-* 支持async function
-* 支持generator function
-
-## 参数校验
-
-参数校验基于Json Schema，目前支持query(formData)，body，path，header四种类型的参数校验。
-
-校验的顺序是：header -> path -> query -> formData -> body，其中任何一部校验失败，接口报错HTTP 400错误，并返回相关错误提示。
-
-详细请深入了解以下文档：
-
-[OpenAPI的data types以及format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types)
-
-[OpenAPI的参数校验规范](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterObject)
-
-### header
-
-```yaml
-paths:
-  /users:
-    get:
-      summary: List all users
-      parameters:
-        - name: token
-          in: header
-          description: token to be passed as a header
-          required: true
-          type: string
-```
-
-校验接口请求的header中是否包含token字段，并且要求为string类型。支持多个header参数同时校验。
-
-### path
-
-```yaml
-paths:
-  /user/{peopleId}:
-    get:
-      summary: pet
-      parameters:
-        - name: peopleId
-          in: path
-          description: peopleId'id
-          required: true
-          type: string
-```
-
-如果你未传入**peopleId**，那么路由将无法被匹配到，而不是提示HTTP 400参数校验失败，目前只支持对path的参数类型，格式做校验并不支持required的校验。支持多个path参数同时校验。
-
-### query(formData)
-
-```yaml
-paths:
-  /users:
-    get:
-      summary: find a user by name
-      parameters:
-        - name: name
-          in: query
-          description: name of user
-          required: true
-          type: string
-```
-
-校验接口的query参数是否为存在并且为字符串。支持多个query参数同时校验。
-
-### body
-
-```yaml
-paths:
-  /user:
-    post:
-      summary: add user
-      parameters:
-        - name: user
-          in: body
-          description: user to add to the system
-          required: true
-          schema:
-            $ref: '#/definitions/User'
-definitions:
-  User:
-    required:
-      - id
-      - name
-    properties:
-      id:
-        type: integer
-        format: int64
-      name:
-        type: string
-      tag:
-        type: string
-```
-
-校验接口的body参数，其中id和name是必须字段。
-
-**注意：OpenAPI2.0规范定义每个接口中仅支持一个body参数，如果API描述文档中包含多个body，那么只会校验第一个body**。
-
-## 结果校验（暂不支持）
-
-
-
-## 错误处理
-
-如果接口抛出异常，那么错误处理函数将会捕捉到异常并处理。默认错误处理函数会根据抛出异常的HTTP状态码获取API文档中设置的response相匹配的schema（如果未找到，那么使用default）。然后会从Error对象中Pick出该schema中定义的所有字段。
-
-```yaml
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: koa-oai-router
+  title: Swagger Petstore
+  description: >-
+    A sample API that uses a petstore as an example to demonstrate features in
+    the swagger-2.0 specification
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: Swagger API Team
+  license:
+    name: MIT
+basePath: /api
+schemes:
+  - http
 consumes:
   - application/json
 produces:
   - application/json
-basePath: /api
-paths:
-  /user:
-    get:
-      x-oai-controller:
-        - file: people
-          handler: get
-      parameters:
-        - name: name
-          in: query
-          type: string
-          required: true
-      responses:
-        200:
-          description: user's info
-          schema:
-            $ref: '#/definitions/User'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-definitions:
-  User:
-    required:
-      - id
-      - name
-    properties:
-      id:
-        type: integer
-        format: int64
-      name:
-        type: string
-      tag:
-        type: string
-  Error:
-    title: Error
-    type: object
-    required:
-      - status
-      - error
-    properties:
-      status:
-        type: integer
-      type:
-      	type: string
-      path:
-        type: string
-      error:
-        type: string
-      detail:
-        type: object
 ```
 
-当接口未传入任何参数时抛出HTTP 400错误的时候，接口返回以下结果：
+### 编写`paths`信息
+编写api接口描述信息，这里的path是一个相对路径。path会追加在basePath的后面组成一个完成的URL，其他字段描述了接口的详细信息。详情请参考[Paths][oai-paths]。
 
-```json
-{
-    "status": 400,
-    "type": "query"
-    "path": "",
-    "error": "Missing required property: page",
-    "data": {},
-    "detail": {
-        "message": "Missing required property: page",
-        "params": {
-            "key": "page"
-        },
-        "code": 302,
-        "dataPath": "",
-        "schemaPath": "/required/0",
-        "subErrors": null,
-        "stack": "...."
-    }
-}
+```yaml
+# ./api/paths/pets.yaml
+
+/pets:
+  get:
+    description: "Returns all pets from the system that the user has access to"
+    operationId: "findPets"
+    produces:
+      - "application/json"
+    tags:
+      - pets
+    x-oai-middleware:
+      - file: pets
+        handler: get
+    parameters:
+      - name: "tags"
+        in: "query"
+        description: "tags to filter by"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      - name: "limit"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+    responses:
+      "200":
+        description: "pet response"
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Pet"
+      default:
+        description: "unexpected error"
+        schema:
+          $ref: "#/definitions/ErrorModel"
+  post:
+    description: "Creates a new pet in the store.  Duplicates are allowed"
+    operationId: "addPet"
+    produces:
+      - "application/json"
+    tags:
+      - pets
+    x-oai-middleware:
+      - file: pets
+        handler: post
+    parameters:
+      - name: "pet"
+        in: "body"
+        description: "Pet to add to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/NewPet"
+    responses:
+      "200":
+        description: "pet response"
+        schema:
+          $ref: "#/definitions/Pet"
+      default:
+        description: "unexpected error"
+        schema:
+          $ref: "#/definitions/ErrorModel"
 ```
 
+### 编写`definitions`信息
+你可以通过definitions定义一些常用的数据模型，这些模型可以很方便地复用在请求参数或者响应结果的定义中，减少文档的“坏味道”。这些数据模型可以是基础数据类型、数组、复杂的JSON对象，详情请参考[Definitions][oai-definitions]。
+
+1.定义接口错误响应数据模型ErrorModel。
+```yaml
+# ./api/definitions/error.yaml
+
+ErrorModel:
+  type: "object"
+  required:
+    - "code"
+    - "message"
+  properties:
+    code:
+      type: "integer"
+      format: "int32"
+    message:
+      type: "string"
+```
+
+2.定义查询成功响应数据模型Pet，定义新增请求数据模型NewPet。
+```yaml
+# ./api/definitions/pets.yaml
+
+Pet:
+  type: "object"
+  allOf:
+    - $ref: "#/definitions/NewPet"
+    - required:
+        - "id"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+
+NewPet:
+  type: "object"
+  required:
+    - "name"
+  properties:
+    name:
+      type: "string"
+    tag:
+      type: "string"
+```
+
+## 体验api-explorer
+启动WEB服务，测试接口，体验api-explorer。
+```bash
+> node app.js
+>
+> curl -X POST "http://localhost:3000/api/pets" -H "Content-Type: application/json" -d "{ \"name\": \"luck\", \"tag\": \"dog\"}"
+> {"id":1,"name":"luck","tag":"dog"}
+>
+> curl -X POST "http://localhost:3000/api/pets" -H "Content-Type: application/json" -d "{ \"name\": \"lily\", \"tag\": \"cat\"}"
+> {"id":2,"name":"lily","tag":"cat"}
+>
+> curl -X POST "http://localhost:3000/api/pets" -H "Content-Type: application/json" -d "{ \"name\": \"mike\", \"tag\": \"dog\"}"
+> {"id":3,"name":"mike","tag":"dog"}
+>
+> curl -X GET "http://localhost:3000/api/pets?tags=cat,dog&limit=2"
+> [{"name":"luck","tag":"dog","id":1},{"name":"lily","tag":"cat","id":2}]
+
+```
+可以看到，我们编写的业务中间件都已经被正常调用了。
+使用浏览器打开**http://localhost:3000/api-explorer**，现在你可以体验api-explorer了。
+![Api Explorer][api-explorer-img]
+
+# 文档
+* [Usage Guides][usage-guides]
+* [References  ][references]
+* [Migration   ][migration]
+* [Examples    ][oai-router-examples]
+
+# 生态
+
+|名称|描述|状态|
+|---|---|---|
+|[koa-oai-router-middleware][oai-router-middleware]|业务中间件加载|开发中|
+|[koa-oai-router-correction][oai-router-correction]|请求表单预处理|开发中|
+|[koa-oai-router-parameters][oai-router-parameters]|请求表单校验|开发中|
+|[koa-oai-router-responses][oai-router-responses]|请求结果处理|开发中|
+|[koa-oai-router-cache][oai-router-cache]|请求缓存插件|计划中|
+|[koa-oai-router-rbac][oai-router-rbac]|请求权限控制|计划中|
+|koa-oai-router-mongo|MongoDB REST server|计划中|
 
 # 计划
-* ~~支持OpenAPI/Swagger1.x规范~~
-* 支持OpenAPI/Swagger3.0规范
-* 支持OpenAPI/Swagger2.0协议中的Security校验
-* 支持接口的返回结果校验
-* 更多的Json Schema校验引擎调研
+* 支持OpenAPI 3.x规范
+* 更多的插件
 * 更多的单元测试
 * Benchmark
