@@ -17,7 +17,6 @@ class Plugin {
     assert(_.isString(name), 'name must be string.');
     assert(_.isString(field) || (_.isArray(field) && _.every(field, _.isString)), 'field must be string or [string].');
     assert(_.isFunction(middlewareWrapper), 'middlewareWrapper must be function.');
-    assert(_.isObject(middlewareArgs) || _.isUndefined(middlewareArgs), 'middlewareWrapper must be object.');
 
     this.name = name;
     this.field = field;
