@@ -20,7 +20,7 @@ function parse(apiDir) {
  * @param {string} api
  * @returns {object}
  */
-function load(api) {
+async function load(api) {
   const stat = statSync(api);
   if (stat.isFile()) {
     return parse(api);

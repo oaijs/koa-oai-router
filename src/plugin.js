@@ -64,7 +64,7 @@ class Plugin {
 
     // wrap to middleware.
     const mw = await this.handler(newMiddlewareOpts, newMiddlewareArgs);
-    Object.defineProperty(mw, 'name', { value: `${field}.${pluginName}` });
+    Object.defineProperty(mw || {}, 'name', { value: `${field}.${pluginName}` });
 
     // do something after.
     await this.after(newMiddlewareOpts, newMiddlewareArgs);
