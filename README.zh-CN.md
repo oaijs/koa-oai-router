@@ -1,8 +1,8 @@
 # Koa-OAI-Router
 
 [![License][license-img]][license-url]
-[![NPM Version][npm-img]][npm-url]
 [![Node Version][node-image]][node-url]
+[![NPM Version][npm-img]][npm-url]
 [![Build Status][travis-img]][travis-url]
 [![Test Coverage][coveralls-img]][coveralls-url]
 [![Downloads][downloads-image]][downloads-url]
@@ -20,7 +20,7 @@
 [downloads-url]: https://npmjs.org/package/koa-oai-router
 [license-img]: http://img.shields.io/badge/license-MIT-green.svg
 [license-url]: http://opensource.org/licenses/MIT
-[node-image]: https://img.shields.io/badge/node.js-v4.0.0-blue.svg
+[node-image]: https://img.shields.io/badge/node.js-v6.0.0-blue.svg
 [node-url]: http://nodejs.org/download/
 [koa-router]: https://github.com/alexmingoia/koa-router
 [oai]: https://github.com/OAI/OpenAPI-Specification
