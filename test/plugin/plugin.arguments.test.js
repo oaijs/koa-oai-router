@@ -1,46 +1,45 @@
 import { AssertionError } from 'assert';
 
-import { init, Plugin } from '../helpers';
+import { _, init, Plugin } from '../helpers';
 
-describe('Plugin name', () => {
-  it('name is string, shoud be ok', async () => {
+describe('Plugin arguments', () => {
+  it('arguments is object, shoud be ok', async () => {
     class PluginX extends Plugin {
       constructor() {
         super();
 
-        this.pluginName = 'parameters';
-        this.field = 'parameters';
+        this.pluginName = 'tags';
+        this.field = 'tags';
       }
-      handler() {
+      handler({ fieldValue }) {
         return (ctx, next) => {
-          ctx.response.body = '1234';
+          ctx.response.body = this.args.key;
         };
       }
     }
 
     const { request } = await init({
       apiDoc: './test/plugin/api',
+      options: {
+        PluginX: { key: '123' },
+      },
       plugins: [PluginX],
     });
 
-    await request.get('/api/pets')
-      .expect(200)
-      .expect('1234');
+    const ret = await request.get('/api/pets').expect(200);
+    expect(ret.text).toEqual('123');
   });
 
-  it('name is invalid, shoud throw error', async () => {
+  it('arguments is not object, shoud throw error', async () => {
     try {
       class PluginX extends Plugin {
         constructor() {
           super();
 
-          this.pluginName = 1234;
-          this.field = 'parameters';
+          this.pluginName = 'tags';
+          this.field = 'tags';
         }
-        handler() {
-          return (ctx, next) => {
-            ctx.response.body = '1234';
-          };
+        handler({ fieldValue }) {
         }
       }
 
