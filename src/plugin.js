@@ -1,64 +1,47 @@
-import _ from 'lodash';
 import assert from 'assert';
 import Debug from 'debug';
+
+import * as util from './util';
 
 const debug = new Debug('koa-oai-router:plugin');
 
 class Plugin {
-  /**
-   * Create a oai router plugin
-   * @param {object} param0
-   * @param {string} param0.name plugin name
-   * @param {string|[]string} param0.field plugin invoke field
-   * @param {function} param0.middlewareWrapper field middleware wrapper function(middlewareOpts, middlewareArgs) {}
-   * @param {object} param0.middlewareArgs field middleware args
-   */
-  constructor({ name, field, middlewareWrapper, middlewareArgs }) {
-    assert(_.isString(name), 'name must be string.');
-    assert(_.isString(field) || (_.isArray(field) && _.every(field, _.isString)), 'field must be string or [string].');
-    assert(_.isFunction(middlewareWrapper), 'middlewareWrapper must be function.');
-
-    this.name = name;
-    this.field = field;
-    this.middlewareWrapper = middlewareWrapper;
-    this.middlewareArgs = middlewareArgs;
+  check() {
+    assert(util.isString(this.field) || (util.isArray(this.field) && util.every(this.field, util.isString)), 'field must be string or [string].');
+    assert(util.isFunction(this.before) || util.isUndefined(this.before), 'before must be function.');
+    assert(util.isFunction(this.handler), 'handler must be function, and return a koa middleware.');
+    assert(util.isFunction(this.after) || util.isUndefined(this.after), 'after must be function.');
   }
 
-  /**
-   * Create a plugin middlewares
-   * @public true
-   * @param {object} plugins
-   * @param {string} plugins.key field
-   * @param {Plugin} plugins.value Plugin
-   * @param {object} middlewareOpts
-   */
-  static middlewares(plugins, middlewareOpts) {
-    let middlewares = [];
-    const { operationValue } = middlewareOpts;
+  // set plugin arguments
+  setArgs(args) {
+    debug(`${this.constructor.name} setArgs:`, args);
+    this.args = args;
+  }
 
-    debug('middlewares', plugins);
-    _.each(plugins, (fieldPlugins, field) => {
-      const fieldValue = operationValue[field];
-      if (!fieldValue) return;
+  // optional override, init only once
+  async init() {
+    return null;
+  }
 
-      const opts = {
-        field,
-        fieldValue,
-        ...middlewareOpts,
-      };
-      const mw = Plugin.pluginsToMiddlewares(fieldPlugins, opts);
+  // optional override
+  async before(docOpts) {
+    return null;
+  }
 
-      debug(field, fieldPlugins);
-      middlewares = middlewares.concat(mw);
-    });
+  // must override
+  async handler(docOpts) {
+    throw new Error('Plugin must implement handler function.');
+  }
 
-    return middlewares;
+  // optional override
+  async after(docOpts) {
+    return null;
   }
 
   /**
    * Create a plugin middleware.
    * @public false
-   * @param {function} middlewareWrapper koa middleware wrapper with args
    * @param {object} middlewareOpts
    * @param {object} middlewareOpts.api whole open api object
    * @param {string} middlewareOpts.endpoint endpoint
@@ -68,33 +51,25 @@ class Plugin {
    * @param {object} middlewareOpts.operationValue https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operationObject
    * @returns {function} koa middleware
    */
-  middleware(middlewareOpts) {
+  async middleware(middlewareOpts) {
+    debug('middleware', middlewareOpts);
+    const { pluginName } = this;
     const { field, options } = middlewareOpts;
-    const { name } = this;
 
-    const newMiddlewareOpts = _.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue']);
-    const newMiddlewareArgs = _.get(options, name) || this.middlewareArgs;
+    const newMiddlewareOpts = util.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue']);
+    const newMiddlewareArgs = util.get(options, pluginName) || this.args;
 
-    const mw = this.middlewareWrapper(newMiddlewareOpts, newMiddlewareArgs);
-    Object.defineProperty(mw, 'name', { value: `${field}.${name}` });
+    // do something before.
+    await this.before(newMiddlewareOpts, newMiddlewareArgs);
+
+    // wrap to middleware.
+    const mw = await this.handler(newMiddlewareOpts, newMiddlewareArgs);
+    Object.defineProperty(mw, 'name', { value: `${field}.${pluginName}` });
+
+    // do something after.
+    await this.after(newMiddlewareOpts, newMiddlewareArgs);
 
     return mw;
-  }
-
-  /**
-   * Convert plugins to middlewares array.
-   * @public false
-   * @param {Plugin[]} plugins
-   * @param {object} middlewareOpts
-   */
-  static pluginsToMiddlewares(plugins, middlewareOpts) {
-    const middlewares = [];
-
-    plugins.forEach((plugin) => {
-      middlewares.push(plugin.middleware(middlewareOpts));
-    });
-
-    return middlewares;
   }
 }
 

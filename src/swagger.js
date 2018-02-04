@@ -1,7 +1,7 @@
-import _ from 'lodash';
 import fs from 'fs';
-
 import { absolutePath } from 'swagger-ui-dist';
+
+import * as util from './util';
 
 const files = {};
 const filesInfo = {
@@ -11,7 +11,7 @@ const filesInfo = {
   presetJs: 'swagger-ui-standalone-preset.js',
 };
 
-_.each(filesInfo, (fileName, alias) => {
+util.each(filesInfo, (fileName, alias) => {
   let content = fs.readFileSync(`${absolutePath()}/${fileName}`).toString();
 
   if (alias === 'index') {

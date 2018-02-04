@@ -1,7 +1,7 @@
 {
   "name": "koa-oai-router",
   "version": "2.0.0-alpha.2",
-  "main": "lib",
+  "main": "src",
   "scripts": {
     "clean": "rm -rf coverage lib",
     "ci": "npm run lint && npm run test",
@@ -29,6 +29,8 @@
     "url": "git@github.com:BiteBit/koa-oai-router.git"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
+    "bottlejs": "^1.7.0",
     "debug": "^2.3.2",
     "js-yaml": "^3.10.0",
     "klaw-sync": "^3.0.2",

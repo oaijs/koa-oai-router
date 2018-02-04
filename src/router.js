@@ -1,13 +1,13 @@
-import _ from 'lodash';
 import assert from 'assert';
 import Debug from 'debug';
 
 import Router from './router-super';
 import spec from './spec';
 import swagger from './swagger';
+import * as util from './util';
 import { oai2koaUrlJoin, urlJoin } from './util/route';
 
-import Plugin from './plugin';
+import PluginRegister from './plugin-register';
 
 const debug = new Debug('koa-oai-router');
 
@@ -20,23 +20,27 @@ class OAIRouter extends Router {
       apiExplorerVisible = true,
       options = {},
     } = opts;
-    assert(_.isString(apiDoc), 'apiDoc must be string.');
+    assert(util.isString(apiDoc), 'apiDoc must be string.');
 
     this.apiExplorerVisible = apiExplorerVisible;
     this.options = options;
 
     this.api = null;
-    this.plugins = {};
+    this.pluginRegister = new PluginRegister(this.options);
 
     spec(apiDoc)
-      .then((api) => {
+      .then(async (api) => {
         this.api = api;
 
-        this.registerRoutes();
-        this.registerApiExplorer();
+        await this.registerRoutes();
+        await this.registerApiExplorer();
+
+        debug('router is ready...');
         this.emit('ready');
       })
       .catch((error) => {
+        console.error('router boot error: ', error);
+
         this.emit('error', error);
       });
   }
@@ -46,31 +50,21 @@ class OAIRouter extends Router {
    * @public true
    * @param {Plugin} plugin plugin object
    */
-  mount(plugin) {
-    assert(plugin instanceof Plugin, 'plugin must be instanceof Plugin');
-
-    const { field: fields } = plugin;
-
-    if (_.isString(fields)) {
-      this.plugins[fields] = _.compact(_.concat(this.plugins[fields], plugin));
-    } else {
-      _.each(fields, (field) => {
-        this.plugins[field] = _.compact(_.concat(this.plugins[field], plugin));
-      });
-    }
+  async mount(pluginClass, args) {
+    await this.pluginRegister.register(pluginClass, args);
   }
 
   /**
    * Initiate routes
    */
-  registerRoutes() {
-    const paths = _.get(this, 'api.paths', []);
+  async registerRoutes() {
+    const paths = util.get(this, 'api.paths', {});
 
-    _.forEach(paths, (pathValue, path) => {
+    await util.eachPromise(paths, async (path, pathValue) => {
       const endpoint = oai2koaUrlJoin(this.api.basePath, path);
 
-      _.forEach(pathValue, (operationValue, operation) => {
-        this.registerRoute(endpoint, operation, operationValue);
+      await util.eachPromise(pathValue, async (operation, operationValue) => {
+        await this.registerRoute(endpoint, operation, operationValue);
       });
     });
   }
@@ -78,7 +72,7 @@ class OAIRouter extends Router {
   /**
    * Initiate a single route to koa.
    */
-  registerRoute(endpoint, operation, operationValue) {
+  async registerRoute(endpoint, operation, operationValue) {
     const middlewareOpts = {
       endpoint,
       operation,
@@ -86,10 +80,10 @@ class OAIRouter extends Router {
       options: this.options,
     };
 
-    const middlewares = Plugin.middlewares(this.plugins, middlewareOpts);
+    const middlewares = await this.pluginRegister.load(middlewareOpts);
 
     debug('middlewares', middlewares);
-    debug(`mount ${operation.toUpperCase()} ${endpoint} ${_.map(middlewares, 'name').join(' > ')}`);
+    debug(`mount ${operation.toUpperCase()} ${endpoint} ${util.map(middlewares, 'name').join(' > ')}`);
     this[operation](endpoint, ...middlewares);
   }
 
