@@ -1,7 +1,7 @@
 {
   "name": "koa-oai-router",
-  "version": "2.0.0-alpha.2",
-  "main": "src",
+  "version": "2.0.0-alpha.3",
+  "main": "lib",
   "scripts": {
     "clean": "rm -rf coverage lib",
     "ci": "npm run lint && npm run test",
