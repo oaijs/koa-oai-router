@@ -28,7 +28,16 @@ class OAIRouter extends Router {
     this.api = null;
     this.pluginRegister = new PluginRegister(this.options);
 
-    spec(apiDoc)
+    this.apiDoc = apiDoc;
+  }
+
+  /**
+   * Start to parse apiDoc and mount routes. Must called after all mount action is finished.
+   * @public
+   * @returns route dispatcher, koa middleware
+   */
+  routes() {
+    spec(this.apiDoc)
       .then(async (api) => {
         this.api = api;
 
@@ -43,6 +52,8 @@ class OAIRouter extends Router {
 
         this.emit('error', error);
       });
+
+    return super.routes();
   }
 
   /**
