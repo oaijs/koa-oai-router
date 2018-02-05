@@ -8,6 +8,8 @@ const debug = new Debug('koa-oai-router:plugin');
 class Plugin {
   check() {
     assert(util.isString(this.field) || (util.isArray(this.field) && util.every(this.field, util.isString)), 'field must be string or [string].');
+    assert(util.isString(this.pluginName) || util.isUndefined(this.pluginName), 'pluginName must be string.');
+    assert(util.isFunction(this.init) || util.isUndefined(this.init), 'init must be function.');
     assert(util.isFunction(this.before) || util.isUndefined(this.before), 'before must be function.');
     assert(util.isFunction(this.handler), 'handler must be function, and return a koa middleware.');
     assert(util.isFunction(this.after) || util.isUndefined(this.after), 'after must be function.');
@@ -56,7 +58,7 @@ class Plugin {
     const { pluginName } = this;
     const { field } = middlewareOpts;
 
-    const newMiddlewareOpts = util.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue', 'options']);
+    const newMiddlewareOpts = util.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue']);
     const newMiddlewareArgs = this.args;
 
     debug('middleware arguments: ', newMiddlewareOpts, newMiddlewareArgs);

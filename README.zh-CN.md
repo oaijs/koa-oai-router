@@ -131,7 +131,7 @@ const router = new Router({
 
 // *配置插件 - 识别api文档中的x-oai-middleware并从controllers中加载相应的中间件
 // *挂载插件到router
-router.mount(middleware('./controllers'));
+router.mount(middleware, './controllers');
 
 app.use(logger());
 app.use(bodyParser());

@@ -29,8 +29,14 @@ class PluginRegister {
   async register(pluginClass, args) {
     assert(pluginClass && pluginClass.prototype instanceof Plugin, 'plugin must inherits from class Plugin.');
 
-    const name = util.get(pluginClass, 'name');
-    const opts = util.get(this, `options.${name}`, args);
+    const pluginName = this.container.tempGet(pluginClass, 'pluginName');
+    const pluginClassName = this.container.tempGet(pluginClass, 'constructor.name');
+
+    const argsByPluginName = util.get(this, `options.${pluginName}`);
+    const argsByPluginClassName = util.get(this, `options.${pluginClassName}`);
+
+    const name = pluginName || pluginClassName;
+    const opts = argsByPluginName || argsByPluginClassName || args;
 
     debug('register new plugin', name, JSON.stringify(opts));
 

@@ -3,7 +3,7 @@
 
 * [Router](#router)
 	* [new Router(options)](#new-routeroptions)
-	* [router.mount(Plugin)](#routermountplugin)
+	* [router.mount(Plugin, pluginArgs)](#routermountplugin-pluginargs)
 	* [router.get|put|post|patch|delete|del](#routergetputpostpatchdeletedel)
 	* [router.routes()](#routerroutes)
 	* [router.use([path], middleware)](#routerusepath-middleware)
@@ -14,7 +14,11 @@
 	* [router.param(param, middleware)](#routerparamparam-middleware)
 	* [Router.url(path, params)](#routerurlpath-params)
 * [Plugin](#plugin)
-	* [new Plugin(options)](#new-pluginoptions)
+	* [constructor(args)](#constructorargs)
+	* [init()](#init)
+	* [before(docOpts)](#beforedocopts)
+	* [handler(docOpts)](#handlerdocopts)
+	* [after(docOpts)](#afterdocopts)
 
 <!-- /code_chunk_output -->
 
@@ -77,7 +81,7 @@ app.use(router.routes());
 app.listen(3000);
 ```
 
-## router.mount(Plugin)
+## router.mount(Plugin, pluginArgs)
 将插件挂载到router上，先挂载的插件先被执行。如果其中一个插件未唤起next()，那么后续插件链的执行将被结束。
 
 ## router.get|put|post|patch|delete|del
@@ -110,62 +114,107 @@ Same as koa-router: [Router.url(path, params)][Router-url]
 
 # Plugin
 插件是可以应用在每一个接口上的koa中间。
-它的激活取决于该接口描述文档中是否包含它的`激活字段(field)`。一旦插件被激活，那么`middlewareWrapper`将在内部被调用，并传入(middlewareOpts, middlewareArgs)参数，且必须返回一个koa中间件，该中间件将被挂载到当前接口上。
+它的激活取决于该接口描述文档中是否包含它的`激活字段(field)`。一旦插件被激活，那么`handler`将在内部被调用，并传入`(docOpts)`参数，且必须返回一个koa中间件，该中间件将被挂载到当前接口上。
 
-## new Plugin(options)
 
-* `options` {object} 插件的配置选项。有以下字段：
-  * `name` {string} `必须` 插件的名称。在路由的`options`中配置插件参数时作为key。
-  * `field` {string|string[]} `必须` 激活字段。当API文档中包含该字段时插件被激活。字段范围参考[Operation Object][oai-fields]。
-  * `middlewareWrapper` {object} `必须` 插件逻辑模块，必须返回一个koa中间件。
-  * `middlewareArgs` {object} `可选` 插件的全局选项。
+`pluginArgs`可以在创建router时配置，本方法的配置将拥有最高优先级。
+```js
+class PluginX extends Plugin {
+  constructor() {
+    super();
 
-创建一个Router的插件。
+    this.pluginName = 'tags';
+    this.field = 'tags';
+    this.after = undefined;
+  }
+  handler({ fieldValue }) {
+    return (ctx, next) => {
+      // what do you want to do.
+    };
+  }
+}
 
-`middlewareWrapper`必须返回一个koa中间件，有(middlewareOpts, middlewareArgs)参数：
-* `middlewareOpts` {object} 插件被激活时当前接口文档片段的信息。
+// PluginName and Plugin class name both can be config for arguments
+const router = new Router({
+  apiDoc: './api',
+  options: {
+    PluginX: pluginArgs,
+    // OR
+    tags: pluginArgs
+  }
+});
+
+router.mount(PluginX);
+```
+
+`pluginArgs`也可以在创建插件时配置，本方法的配置将拥有最低的优先级。
+```js
+class PluginX extends Plugin {
+  constructor() {
+    super();
+
+    this.pluginName = 'tags';
+    this.field = 'tags';
+    this.after = undefined;
+  }
+  handler({ fieldValue }) {
+    return (ctx, next) => {
+      // what do you want to do.
+    };
+  }
+}
+
+const router = new Router({
+  apiDoc: './api',
+});
+
+router.mount(plugin, pluginArgs);
+```
+
+
+## constructor(args)
+在构造函数请设置参数：`pluginName`, `field`, `args`。
+* `pluginName` `string` `optional` 插件名称，用于配置插件参数。如果不设置默认使用插件类名称。
+* `fields` `string|string[]` `required` 插件的激活字段
+* `args` `any` `optional` 插件的参数
+
+## init()
+在插件初始化时调用，在`before`之前。插件生命周期中只执行一次，适合做一些插件启动工作。
+
+`可选`实现
+
+## before(docOpts)
+插件的前置业务逻辑，在`handler`之前执行，
+
+`可选`实现
+
+* `docOpts` {object} 插件被激活时当前接口文档片段的信息。
   * `endpoint` {string} 接口的路径
   * `field` {string} 被激活时的关键字
   * `fieldValue` {object} 被激活时的关键字对应的数据
   * `operation` {string} 接口的方法
   * `operationValue` {object} 接口的描述信息
-* `middlewareArgs` {any} 插件的全局选项。
 
-`middlewareArgs`可以在创建router时配置，本方法的配置将拥有最高优先级。
-```js
-const plugin = new PluginXXX({
-  name: 'pluginXXX',
-  field: 'parameters',
-  // middlewareArgs: pluginArgs,
-  middlewareWrapper: () => {
-    return (ctx, next) => {return next();};
-  },
-});
+## handler(docOpts)
+插件的主要业务逻辑。
 
-const router = new Router({
-  apiDoc: './api',
-  options: {
-    pluginXXX: pluginArgs,
-  }
-});
+`必须`实现，且要求返回koa中间件，形如：`function(ctx, next) {}`。
 
-router.mount(plugin);
-```
+* `docOpts` {object} 插件被激活时当前接口文档片段的信息。
+  * `endpoint` {string} 接口的路径
+  * `field` {string} 被激活时的关键字
+  * `fieldValue` {object} 被激活时的关键字对应的数据
+  * `operation` {string} 接口的方法
+  * `operationValue` {object} 接口的描述信息
 
-`middlewareArgs`也可以在创建插件时配置，本方法的配置将拥有最低的优先级。
-```js
-const plugin = new PluginXXX({
-  name: 'pluginXXX',
-  field: 'parameters',
-  middlewareArgs: pluginArgs,
-  middlewareWrapper: () => {
-    return (ctx, next) => {return next();};
-  },
-});
+## after(docOpts)
+插件的后置业务逻辑，在`handler`之后执行，
 
-const router = new Router({
-  apiDoc: './api',
-});
+`可选`实现
 
-router.mount(plugin);
-```
+* `docOpts` {object} 插件被激活时当前接口文档片段的信息。
+  * `endpoint` {string} 接口的路径
+  * `field` {string} 被激活时的关键字
+  * `fieldValue` {object} 被激活时的关键字对应的数据
+  * `operation` {string} 接口的方法
+  * `operationValue` {object} 接口的描述信息

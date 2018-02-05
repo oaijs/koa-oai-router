@@ -132,7 +132,7 @@ const router = new Router({
 
 // *configure plugin - identify x-oai-middleware in the api file and load the appropriate middleware from controllers
 // *mount plugin to router
-router.mount(middleware('./controllers'));
+router.mount(middleware, './controllers');
 
 app.use(logger());
 app.use(bodyParser());

@@ -3,7 +3,7 @@
 
 * [Router](#router)
 	* [new Router(options)](#new-routeroptions)
-	* [router.mount(Plugin)](#routermountplugin)
+	* [router.mount(Plugin, pluginArgs)](#routermountplugin-pluginargs)
 	* [router.get|put|post|patch|delete|del](#routergetputpostpatchdeletedel)
 	* [router.routes()](#routerroutes)
 	* [router.use([path], middleware)](#routerusepath-middleware)
@@ -14,7 +14,11 @@
 	* [router.param(param, middleware)](#routerparamparam-middleware)
 	* [Router.url(path, params)](#routerurlpath-params)
 * [Plugin](#plugin)
-	* [new Plugin(options)](#new-pluginoptions)
+	* [constructor(args)](#constructorargs)
+	* [init()](#init)
+	* [before(docOpts)](#beforedocopts)
+	* [handler(docOpts)](#handlerdocopts)
+	* [after(docOpts)](#afterdocopts)
 
 <!-- /code_chunk_output -->
 
@@ -75,7 +79,7 @@ app.use(router.routes());
 app.listen(3000);
 ```
 
-## router.mount(Plugin)
+## router.mount(Plugin, pluginArgs)
 Mount the plugin to the router, the plugin will be executed with order of mount.
 If one of the plugins does not evoke next(), execution of the subsequent plugin chain will be terminated.
 
@@ -107,64 +111,110 @@ Same as koa-router: [router.param(param, middleware)][router-param]
 Same as koa-router: [Router.url(path, params)][Router-url]
 
 
+
 # Plugin
 Plugins can be applied to every api as koa middleware.
-Its activation depends on whether the api document contains its activation `field`. Once the plugin is activated, `middlewareWrapper` will be invoked internally and passed in the `(middlewareOpts, middlewareArgs)` parameter and must return a koa middleware that will be mounted on the current api.
+Its activation depends on whether the api document contains its activation `field`. Once the plugin is activated, `handler` will be invoked internally and passed in the `(docOpts)` parameter and must return a koa middleware that will be mounted on the current api.
 
-## new Plugin(options)
-Create a plugin.
 
-* `options` {object} Plugin configuration options. Can have the following fields:
-  * `name` {string} `required` The name of the plugin. Configure the plugin parameters in the router options as the key.
-  * `field` {string|string[]} `required` Activate field. The plugin is activated when this field is included in the API document. Field range reference [Operation Object][oai-fields].
-  * `middlewareWrapper` {object} `required` Plugin logic module, you must return a koa middleware.
-  * `middlewareArgs` {object} `optional` Plugin global options.
+`pluginArgs` can be configured when creating a router and the configuration of this method will have the highest priority.
+```js
+class PluginX extends Plugin {
+  constructor() {
+    super();
 
-`middlewareWrapper` Must return a koa middleware, there (middlewareOpts, middlewareArgs) Parameters:
-* `middlewareOpts` {object} Information about the current interface document fragment when the plug-in is activated.
+    this.pluginName = 'tags';
+    this.field = 'tags';
+    this.after = undefined;
+  }
+  handler({ fieldValue }) {
+    return (ctx, next) => {
+      // what do you want to do.
+    };
+  }
+}
+
+// PluginName and Plugin class name both can be config for arguments
+const router = new Router({
+  apiDoc: './api',
+  options: {
+    PluginX: pluginArgs,
+    // OR
+    tags: pluginArgs
+  }
+});
+
+router.mount(PluginX);
+```
+
+`pluginArgs` it can also be configured when creating a plugin, and the method's configuration will have the lowest priority.
+```js
+class PluginX extends Plugin {
+  constructor() {
+    super();
+
+    this.pluginName = 'tags';
+    this.field = 'tags';
+    this.after = undefined;
+  }
+  handler({ fieldValue }) {
+    return (ctx, next) => {
+      // what do you want to do.
+    };
+  }
+}
+
+const router = new Router({
+  apiDoc: './api',
+});
+
+router.mount(plugin, pluginArgs);
+```
+
+
+## constructor(args)
+Must set these properties in constructor: `pluginName`, `field`, `args`.
+* `pluginName` `string` `required` name of plugin
+* `fields` `string|string[]` `required` invoked fields
+* `args` `any` `optional` args of plugin
+
+## init()
+Called when plugin is initializing and called before `before`. Only called once, suit for prepare works.
+
+`optional` implemented
+
+## before(docOpts)
+Previous works for plugin, called before `handler`.
+
+`optional` implemented
+
+* `docOpts` {object} Information about the current interface document fragment when the plug-in is activated.
   * `endpoint` {string} ednpoint
   * `field` {string} the keyword when activated
   * `fieldValue` {object} The data corresponding to the keyword when it is activated
   * `operation` {string} http method
   * `operationValue` {object} api's meta data
-* `middlewareArgs` {any} Plugin global options.
 
-`middlewareArgs` can be configured when creating a router and the configuration of this method will have the highest priority.
-```js
-const plugin = new PluginXXX({
-  name: 'pluginXXX',
-  field: 'parameters',
-  // middlewareArgs: pluginArgs,
-  middlewareWrapper: () => {
-    return (ctx, next) => {return next();};
-  },
-});
+## handler(docOpts)
+Main works for plugin.
 
-const router = new Router({
-  apiDoc: './api',
-  options: {
-    pluginXXX: pluginArgs,
-  }
-});
+`required` implemented, must return a koa middleware function, eg: `function(ctx, next) {}`.
 
-router.mount(plugin);
-```
+* `docOpts` {object} Information about the current interface document fragment when the plug-in is activated.
+  * `endpoint` {string} ednpoint
+  * `field` {string} the keyword when activated
+  * `fieldValue` {object} The data corresponding to the keyword when it is activated
+  * `operation` {string} http method
+  * `operationValue` {object} api's meta data
 
-`middlewareArgs` it can also be configured when creating a plugin, and the method's configuration will have the lowest priority.
+## after(docOpts)
+Post works for plugin, called after `handler`.
 
-```js
-const plugin = new PluginXXX({
-  name: 'pluginXXX',
-  field: 'parameters',
-  middlewareArgs: pluginArgs,
-  middlewareWrapper: () => {
-    return (ctx, next) => {return next();};
-  },
-});
+`optional` implemented
 
-const router = new Router({
-  apiDoc: './api',
-});
-
-router.mount(plugin);
-```
+* `docOpts` {object} Information about the current interface document fragment when the plug-in is activated.
+  * `endpoint` {string} ednpoint
+  * `field` {string} the keyword when activated
+  * `fieldValue` {object} The data corresponding to the keyword when it is activated
+  * `operation` {string} http method
+  * `operationValue` {object} api's meta data
