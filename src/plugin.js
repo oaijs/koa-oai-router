@@ -52,12 +52,14 @@ class Plugin {
    * @returns {function} koa middleware
    */
   async middleware(middlewareOpts) {
-    debug('middleware', middlewareOpts);
+    debug('convert to middleware: ', middlewareOpts);
     const { pluginName } = this;
-    const { field, options } = middlewareOpts;
+    const { field } = middlewareOpts;
 
-    const newMiddlewareOpts = util.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue']);
-    const newMiddlewareArgs = util.get(options, pluginName) || this.args;
+    const newMiddlewareOpts = util.pick(middlewareOpts, ['api', 'endpoint', 'field', 'fieldValue', 'operation', 'operationValue', 'options']);
+    const newMiddlewareArgs = this.args;
+
+    debug('middleware arguments: ', newMiddlewareOpts, newMiddlewareArgs);
 
     // do something before.
     await this.before(newMiddlewareOpts, newMiddlewareArgs);
