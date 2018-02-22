@@ -135,6 +135,8 @@ class OAIRouter extends Router {
         urls: [{ name: 'api-doc', url: urlJoin(this.options.prefix, 'api.json') }],
         displayOperationId: true,
         displayRequestDuration: true,
+        showExtensions: true,
+        defaultModelsExpandDepth: 0,
       };
     });
   }
