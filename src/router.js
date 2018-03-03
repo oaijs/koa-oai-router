@@ -18,17 +18,19 @@ class OAIRouter extends Router {
     const {
       apiDoc,
       apiExplorerVisible = true,
+      apiCooker = (api) => { return api; },
       options = {},
     } = opts;
     assert(util.isString(apiDoc), 'apiDoc must be string.');
+    assert(util.isFunction(apiCooker), 'apiCooker must be function.');
 
+    this.apiDoc = apiDoc;
     this.apiExplorerVisible = apiExplorerVisible;
+    this.apiCooker = apiCooker;
     this.options = options;
 
     this.api = null;
     this.pluginRegister = new PluginRegister(this.options);
-
-    this.apiDoc = apiDoc;
   }
 
   /**
@@ -39,7 +41,7 @@ class OAIRouter extends Router {
   routes() {
     spec(this.apiDoc)
       .then(async (api) => {
-        this.api = api;
+        this.api = await this.apiCooker(api);
 
         await this.registerRoutes();
         await this.registerApiExplorer();
