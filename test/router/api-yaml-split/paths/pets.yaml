@@ -1,0 +1,63 @@
+/pets:
+  get:
+    description: "Returns all pets from the system that the user has access to"
+    operationId: "findPets"
+    produces:
+      - "application/json"
+    tags:
+      - pets
+    parameters:
+      - name: "tags"
+        in: "query"
+        description: "tags to filter by"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      - name: "limit"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+    x-oai-middleware:
+      - file: store
+        handler: petsGet
+    responses:
+      "200":
+        description: "pet response"
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Pet"
+      default:
+        description: "unexpected error"
+        schema:
+          $ref: "#/definitions/ErrorModel"
+  post:
+    description: "Creates a new pet in the store.  Duplicates are allowed"
+    operationId: "addPet"
+    produces:
+      - "application/json"
+    tags:
+      - pets
+    x-oai-middleware:
+      - file: store
+        handler: petsPost
+    parameters:
+      - name: "pet"
+        in: "body"
+        description: "Pet to add to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/NewPet"
+    responses:
+      "200":
+        description: "pet response"
+        schema:
+          $ref: "#/definitions/Pet"
+      default:
+        description: "unexpected error"
+        schema:
+          $ref: "#/definitions/ErrorModel"
