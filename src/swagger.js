@@ -15,7 +15,7 @@ util.each(filesInfo, (fileName, alias) => {
   let content = fs.readFileSync(`${absolutePath()}/${fileName}`).toString();
 
   if (alias === 'index') {
-    const oldSegment = 'url: "http://petstore.swagger.io/v2/swagger.json",';
+    const oldSegment = /url: "(http|https):\/\/petstore\.swagger\.io\/v2\/swagger\.json",/;
     const newSegment = 'configUrl: "./api-explorer-config.json",';
     content = content.replace(oldSegment, newSegment);
   }
