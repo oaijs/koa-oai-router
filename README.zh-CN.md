@@ -35,6 +35,7 @@
 [oai-router-correction]: https://github.com/oaijs/koa-oai-router-correction
 [oai-router-cache]: https://github.com/oaijs/koa-oai-router-cache
 [oai-router-rbac]: https://github.com/oaijs/koa-oai-router-rbac
+[oai-router-controller-mongo]: https://github.com/oaijs/koa-oai-router-controller-mongo
 [oai-router-examples]: https://github.com/oaijs/koa-oai-router-examples
 [migration]: ./docs/zh/migration.md
 [usage-guides]: ./docs/zh/usage-guides.md
@@ -361,13 +362,13 @@ NewPet:
 
 |名称|描述|状态|
 |---|---|---|
-|[koa-oai-router-middleware][oai-router-middleware]|业务中间件加载|开发中|
-|[koa-oai-router-correction][oai-router-correction]|请求表单预处理|开发中|
-|[koa-oai-router-parameters][oai-router-parameters]|请求表单校验|开发中|
-|[koa-oai-router-responses][oai-router-responses]|请求结果处理|开发中|
-|[koa-oai-router-cache][oai-router-cache]|请求缓存插件|计划中|
+|[koa-oai-router-middleware][oai-router-middleware]|业务中间件加载|完成|
+|[koa-oai-router-correction][oai-router-correction]|请求表单预处理|完成|
+|[koa-oai-router-parameters][oai-router-parameters]|请求表单校验|完成|
+|[koa-oai-router-responses][oai-router-responses]|请求结果处理|完成|
+|[koa-oai-router-cache][oai-router-cache]|请求缓存插件|完成|
 |[koa-oai-router-rbac][oai-router-rbac]|请求权限控制|计划中|
-|koa-oai-router-mongo|MongoDB REST server|计划中|
+|[koa-oai-router-controller-mongo][oai-router-controller-mongo]|MongoDB REST server|开发中|
 
 # 计划
 * 支持OpenAPI 3.x规范
