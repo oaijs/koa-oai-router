@@ -35,6 +35,7 @@
 [oai-router-correction]: https://github.com/oaijs/koa-oai-router-correction
 [oai-router-cache]: https://github.com/oaijs/koa-oai-router-cache
 [oai-router-rbac]: https://github.com/oaijs/koa-oai-router-rbac
+[oai-router-controller-mongo]: https://github.com/oaijs/koa-oai-router-controller-mongo
 [oai-router-examples]: https://github.com/oaijs/koa-oai-router-examples
 [migration]: ./docs/en/migration.md
 [usage-guides]: ./docs/en/usage-guides.md
@@ -363,13 +364,13 @@ Use a browser to open `http://localhost:3000/api-explorer`, and you can enjoy ap
 
 |name|description|status|
 |---|---|---|
-|[koa-oai-router-middleware][oai-router-middleware]|middleware loader|Developing|
-|[koa-oai-router-correction][oai-router-correction]|form correction|Developing|
-|[koa-oai-router-parameters][oai-router-parameters]|form validator|Developing|
-|[koa-oai-router-responses][oai-router-responses]|response handler|Developing|
-|[koa-oai-router-cache][oai-router-cache]|request cache|Planning|
+|[koa-oai-router-middleware][oai-router-middleware]|middleware loader|Done|
+|[koa-oai-router-correction][oai-router-correction]|form correction|Done|
+|[koa-oai-router-parameters][oai-router-parameters]|form validator|Done|
+|[koa-oai-router-responses][oai-router-responses]|response handler|Done|
+|[koa-oai-router-cache][oai-router-cache]|request cache|Done|
 |[koa-oai-router-rbac][oai-router-rbac]|request rbac|Planning|
-|koa-oai-router-mongo|MongoDB REST server|Planning|
+|[koa-oai-router-controller-mongo][oai-router-controller-mongo]|MongoDB REST server|Developing|
 
 # Plan
 * Support OpenAPI/Swagger3.0
