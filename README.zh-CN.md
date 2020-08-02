@@ -8,8 +8,8 @@
 [![Downloads][downloads-image]][downloads-url]
 [![Dependency Status][david-img]][david-url]
 
-[travis-img]: https://travis-ci.org/amazing-gao/koa-oai-router.svg?branch=master
-[travis-url]: https://travis-ci.org/amazing-gao/koa-oai-router
+[travis-img]: https://github.com/amazing-gao/koa-oai-router/workflows/Node.js%20CI/badge.svg
+[travis-url]: https://github.com/amazing-gao/koa-oai-router/actions
 [coveralls-img]: https://coveralls.io/repos/github/amazing-gao/koa-oai-router/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/amazing-gao/koa-oai-router?branch=master
 [npm-img]: https://img.shields.io/npm/v/koa-oai-router.svg
@@ -57,21 +57,21 @@
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 <!-- code_chunk_output -->
 
-* [Koa-OAI-Router](#koa-oai-router)
-* [特性](#特性)
-* [迁移](#迁移)
-* [安装](#安装)
-* [快速入门](#快速入门)
-	* [编写WEB服务](#编写web服务)
-	* [编写业务中间件](#编写业务中间件)
-	* [编写Api描述文档](#编写api描述文档)
-		* [编写基础信息](#编写基础信息)
-		* [编写`paths`信息](#编写paths信息)
-		* [编写`definitions`信息](#编写definitions信息)
-	* [体验api-explorer](#体验api-explorer)
-* [文档](#文档)
-* [生态](#生态)
-* [计划](#计划)
+- [Koa-OAI-Router](#koa-oai-router)
+- [特性](#特性)
+- [迁移](#迁移)
+- [安装](#安装)
+- [快速入门](#快速入门)
+  - [编写WEB服务](#编写web服务)
+  - [编写业务中间件](#编写业务中间件)
+  - [编写Api描述文档](#编写api描述文档)
+    - [编写基础信息](#编写基础信息)
+    - [编写`paths`信息](#编写paths信息)
+    - [编写`definitions`信息](#编写definitions信息)
+  - [体验api-explorer](#体验api-explorer)
+- [文档](#文档)
+- [生态](#生态)
+- [计划](#计划)
 
 <!-- /code_chunk_output -->
 
