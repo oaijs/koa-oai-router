@@ -8,14 +8,14 @@
 [![Downloads][downloads-image]][downloads-url]
 [![Dependency Status][david-img]][david-url]
 
-[travis-img]: https://travis-ci.org/BiteBit/koa-oai-router.svg?branch=master
-[travis-url]: https://travis-ci.org/BiteBit/koa-oai-router
-[coveralls-img]: https://coveralls.io/repos/github/BiteBit/koa-oai-router/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/BiteBit/koa-oai-router?branch=master
+[travis-img]: https://travis-ci.org/amazing-gao/koa-oai-router.svg?branch=master
+[travis-url]: https://travis-ci.org/amazing-gao/koa-oai-router
+[coveralls-img]: https://coveralls.io/repos/github/amazing-gao/koa-oai-router/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/amazing-gao/koa-oai-router?branch=master
 [npm-img]: https://img.shields.io/npm/v/koa-oai-router.svg
 [npm-url]: https://npmjs.org/package/koa-oai-router
-[david-img]: https://img.shields.io/david/BiteBit/koa-oai-router.svg
-[david-url]: https://david-dm.org/BiteBit/koa-oai-router
+[david-img]: https://img.shields.io/david/amazing-gao/koa-oai-router.svg
+[david-url]: https://david-dm.org/amazing-gao/koa-oai-router
 [downloads-image]: https://img.shields.io/npm/dm/koa-oai-router.svg
 [downloads-url]: https://npmjs.org/package/koa-oai-router
 [license-img]: http://img.shields.io/badge/license-MIT-green.svg
@@ -360,15 +360,15 @@ NewPet:
 
 # 生态
 
-|名称|描述|状态|
-|---|---|---|
-|[koa-oai-router-middleware][oai-router-middleware]|业务中间件加载|完成|
-|[koa-oai-router-correction][oai-router-correction]|请求表单预处理|完成|
-|[koa-oai-router-parameters][oai-router-parameters]|请求表单校验|完成|
-|[koa-oai-router-responses][oai-router-responses]|请求结果处理|完成|
-|[koa-oai-router-cache][oai-router-cache]|请求缓存插件|完成|
-|[koa-oai-router-rbac][oai-router-rbac]|请求权限控制|计划中|
-|[koa-oai-router-controller-mongo][oai-router-controller-mongo]|MongoDB REST server|开发中|
+| 名称                                                           | 描述                | 状态   |
+| -------------------------------------------------------------- | ------------------- | ------ |
+| [koa-oai-router-middleware][oai-router-middleware]             | 业务中间件加载      | 完成   |
+| [koa-oai-router-correction][oai-router-correction]             | 请求表单预处理      | 完成   |
+| [koa-oai-router-parameters][oai-router-parameters]             | 请求表单校验        | 完成   |
+| [koa-oai-router-responses][oai-router-responses]               | 请求结果处理        | 完成   |
+| [koa-oai-router-cache][oai-router-cache]                       | 请求缓存插件        | 完成   |
+| [koa-oai-router-rbac][oai-router-rbac]                         | 请求权限控制        | 计划中 |
+| [koa-oai-router-controller-mongo][oai-router-controller-mongo] | MongoDB REST server | 开发中 |
 
 # 计划
 * 支持OpenAPI 3.x规范

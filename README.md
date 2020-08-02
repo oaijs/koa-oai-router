@@ -8,14 +8,14 @@
 [![Downloads][downloads-image]][downloads-url]
 [![Dependency Status][david-img]][david-url]
 
-[travis-img]: https://travis-ci.org/BiteBit/koa-oai-router.svg?branch=master
-[travis-url]: https://travis-ci.org/BiteBit/koa-oai-router
-[coveralls-img]: https://coveralls.io/repos/github/BiteBit/koa-oai-router/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/BiteBit/koa-oai-router?branch=master
+[travis-img]: https://travis-ci.org/amazing-gao/koa-oai-router.svg?branch=master
+[travis-url]: https://travis-ci.org/amazing-gao/koa-oai-router
+[coveralls-img]: https://coveralls.io/repos/github/amazing-gao/koa-oai-router/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/amazing-gao/koa-oai-router?branch=master
 [npm-img]: https://img.shields.io/npm/v/koa-oai-router.svg
 [npm-url]: https://npmjs.org/package/koa-oai-router
-[david-img]: https://img.shields.io/david/BiteBit/koa-oai-router.svg
-[david-url]: https://david-dm.org/BiteBit/koa-oai-router
+[david-img]: https://img.shields.io/david/amazing-gao/koa-oai-router.svg
+[david-url]: https://david-dm.org/amazing-gao/koa-oai-router
 [downloads-image]: https://img.shields.io/npm/dm/koa-oai-router.svg
 [downloads-url]: https://npmjs.org/package/koa-oai-router
 [license-img]: http://img.shields.io/badge/license-MIT-green.svg
@@ -362,15 +362,15 @@ Use a browser to open `http://localhost:3000/api-explorer`, and you can enjoy ap
 
 # Ecosystem
 
-|name|description|status|
-|---|---|---|
-|[koa-oai-router-middleware][oai-router-middleware]|middleware loader|Done|
-|[koa-oai-router-correction][oai-router-correction]|form correction|Done|
-|[koa-oai-router-parameters][oai-router-parameters]|form validator|Done|
-|[koa-oai-router-responses][oai-router-responses]|response handler|Done|
-|[koa-oai-router-cache][oai-router-cache]|request cache|Done|
-|[koa-oai-router-rbac][oai-router-rbac]|request rbac|Planning|
-|[koa-oai-router-controller-mongo][oai-router-controller-mongo]|MongoDB REST server|Developing|
+| name                                                           | description         | status     |
+| -------------------------------------------------------------- | ------------------- | ---------- |
+| [koa-oai-router-middleware][oai-router-middleware]             | middleware loader   | Done       |
+| [koa-oai-router-correction][oai-router-correction]             | form correction     | Done       |
+| [koa-oai-router-parameters][oai-router-parameters]             | form validator      | Done       |
+| [koa-oai-router-responses][oai-router-responses]               | response handler    | Done       |
+| [koa-oai-router-cache][oai-router-cache]                       | request cache       | Done       |
+| [koa-oai-router-rbac][oai-router-rbac]                         | request rbac        | Planning   |
+| [koa-oai-router-controller-mongo][oai-router-controller-mongo] | MongoDB REST server | Developing |
 
 # Plan
 * Support OpenAPI/Swagger3.0
