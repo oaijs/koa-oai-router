@@ -8,8 +8,8 @@
 [![Downloads][downloads-image]][downloads-url]
 [![Dependency Status][david-img]][david-url]
 
-[travis-img]: https://travis-ci.org/amazing-gao/koa-oai-router.svg?branch=master
-[travis-url]: https://travis-ci.org/amazing-gao/koa-oai-router
+[travis-img]: https://github.com/amazing-gao/koa-oai-router/workflows/Node.js%20CI/badge.svg
+[travis-url]: https://github.com/amazing-gao/koa-oai-router/actions
 [coveralls-img]: https://coveralls.io/repos/github/amazing-gao/koa-oai-router/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/amazing-gao/koa-oai-router?branch=master
 [npm-img]: https://img.shields.io/npm/v/koa-oai-router.svg
@@ -57,21 +57,21 @@ BTW，PR & Issue & Star are welcome! : )
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 <!-- code_chunk_output -->
 
-* [Koa-OAI-Router](#koa-oai-router)
-* [Features](#features)
-* [Migration](#migration)
-* [Installation](#installation)
-* [Getting Started](#getting-started)
-	* [Creating web server](#creating-web-server)
-	* [Creating business middleware](#creating-business-middleware)
-	* [Creating api doc](#creating-api-doc)
-		* [Writing api base info](#writing-api-base-info)
-		* [Writing `paths` info](#writing-paths-info)
-		* [Writing `definitions` info](#writing-definitions-info)
-	* [Enjoying api-explorer](#enjoying-api-explorer)
-* [Documentation](#documentation)
-* [Ecosystem](#ecosystem)
-* [Plan](#plan)
+- [Koa-OAI-Router](#koa-oai-router)
+- [Features](#features)
+- [Migration](#migration)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+  - [Creating web server](#creating-web-server)
+  - [Creating business middleware](#creating-business-middleware)
+  - [Creating api doc](#creating-api-doc)
+    - [Writing api base info](#writing-api-base-info)
+    - [Writing `paths` info](#writing-paths-info)
+    - [Writing `definitions` info](#writing-definitions-info)
+  - [Enjoying api-explorer](#enjoying-api-explorer)
+- [Documentation](#documentation)
+- [Ecosystem](#ecosystem)
+- [Plan](#plan)
 
 <!-- /code_chunk_output -->
 
