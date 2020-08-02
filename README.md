@@ -44,9 +44,9 @@
 
 [中文](./README.zh-CN.md)    [English](./README.md)
 
-I have used markdown and wiki to manage api doc, from which I have suffered a lot. It wastes too much time and is very boring. The docuement should be repaired when you change the api. It's very unconvenient to test and debug. The management of api doc totally depends on people. As a result, it is hard to make docuement have high quality. Meanwhile, the developers will spend more time on testing, which may have a bad effect on project. What's worse, it will affect our mood, which is unbearable for me : (
+I have used markdown and wiki to manage api doc, from which I have suffered a lot. It wastes too much time and is very boring. The document should be repaired when you change the api. It's very unconvenient to test and debug. The management of api doc totally depends on people. As a result, it is hard to make document have high quality. Meanwhile, the developers will spend more time on testing, which may have a bad effect on project. What's worse, it will affect our mood, which is unbearable for me : (
 
-So I try my best to solve this problem. When there is a will, there is a way. Finally, I find The [OpenAPI Specification][oai]. And it's ecological circle is perfect. [Swagger][swagger] includes lots of tool chain. According to the Specification, [Swagger UI][swagger-ui] can produce the docuement. The data types and models of OpenAPI are based on the [JSON-Schema Draft 4][jsonschema].
+So I try my best to solve this problem. When there is a will, there is a way. Finally, I find The [OpenAPI Specification][oai]. And its ecological circle is perfect. [Swagger][swagger] includes lots of tool chain. According to the Specification, [Swagger UI][swagger-ui] can produce the document. The data types and models of OpenAPI are based on the [JSON-Schema Draft 4][jsonschema].
 
 I truly hope that this library can help those who are in the same trouble. Happy coding.
 
